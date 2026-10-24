@@ -3,21 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maresía · Moda femenina</title>
-<meta name="description" content="Maqueta de tienda de moda femenina para España y México. Propuesta de diseño preparada para Emilio.">
+<title>Maresía · Tienda demo</title>
+<meta name="description" content="Demo funcional de tienda de moda femenina para España y México: catálogo, carrito y dos mercados sobre una única tienda.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap">
 <style>
 /* ──────────────────────────────────────────────────────────────
-   Maresía — maqueta de tienda de moda femenina
+   MARESÍA — demo funcional de tienda
    Identidad: basalto canario, sal y vidrio de mar.
-   Mundo visual único y deliberado: una marca no cambia de
+   Un mundo visual único y deliberado: una marca no cambia de
    identidad según el sistema operativo de quien la visita.
    ────────────────────────────────────────────────────────────── */
 :root{
   --salt:#eceae5;
   --paper:#f7f6f3;
+  --white:#fdfcfa;
   --basalt:#171614;
   --basalt-soft:#4a4642;
   --dune:#a0968a;
@@ -27,6 +28,7 @@
   --line:#d5cfc5;
   --line-dark:#332f2a;
 
+  --step--2:clamp(.68rem,.66rem + .08vw,.72rem);
   --step--1:clamp(.78rem,.76rem + .1vw,.84rem);
   --step-0:clamp(.98rem,.95rem + .15vw,1.05rem);
   --step-1:clamp(1.2rem,1.1rem + .45vw,1.45rem);
@@ -35,6 +37,7 @@
 
   --gut:clamp(1.1rem,.6rem + 2vw,2rem);
   --shell:78rem;
+  --ease:cubic-bezier(.16,.8,.28,1);
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -52,97 +55,110 @@ body{
   -webkit-font-smoothing:antialiased;
   overflow-x:hidden;
 }
+body.locked{overflow:hidden}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--sea);outline-offset:3px}
 h1,h2,h3{margin:0;font-weight:400}
 
 .shell{width:100%;max-width:var(--shell);margin-inline:auto;padding-inline:var(--gut)}
-.lab{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;line-height:1.4}
+.lab{font-size:var(--step--2);letter-spacing:.2em;text-transform:uppercase;font-weight:400;line-height:1.4}
 .serif{font-family:"Bodoni Moda",Didot,"Times New Roman",Georgia,serif}
+.num{font-variant-numeric:tabular-nums}
 
-.skip{
-  position:absolute;left:-9999px;top:0;z-index:200;
-  background:var(--basalt);color:var(--salt);padding:.7rem 1.1rem;
-}
+.skip{position:absolute;left:-9999px;top:0;z-index:400;background:var(--basalt);color:var(--salt);padding:.7rem 1.1rem}
 .skip:focus{left:.5rem;top:.5rem}
 
-/* ── barra de servicio ───────────────────────────────────── */
-.ticker{background:var(--basalt);color:var(--salt);text-align:center;padding:.6rem var(--gut)}
-.ticker span{color:#e7e3dc}
+/* ── marquesina ──────────────────────────────────────────── */
+.ticker{background:var(--basalt);color:#e7e3dc;padding-block:.6rem;overflow:hidden}
+.marquee{display:flex;width:max-content;animation:slide 44s linear infinite}
+.ticker:hover .marquee,.ticker:focus-within .marquee{animation-play-state:paused}
+.mgroup{display:flex;flex:none}
+.mgroup span{padding-inline:1.5rem;white-space:nowrap;position:relative}
+.mgroup span::after{content:"";position:absolute;right:0;top:50%;width:3px;height:3px;border-radius:50%;background:var(--dune)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* ── cabecera ────────────────────────────────────────────── */
 .site-head{
-  position:sticky;top:0;z-index:100;
+  position:sticky;top:0;z-index:90;
   background:rgba(236,234,229,.88);
   backdrop-filter:saturate(1.4) blur(14px);
   -webkit-backdrop-filter:saturate(1.4) blur(14px);
   border-bottom:1px solid var(--line);
 }
 .bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;padding:1.1rem 0}
-.nav-desk{display:flex;gap:1.75rem}
-.nav-desk a{position:relative;padding-block:.15rem}
-.nav-desk a::after{
-  content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;
-  background:var(--basalt);transform:scaleX(0);transform-origin:left;
-}
-.nav-desk a:hover::after,.nav-desk a:focus-visible::after{transform:scaleX(1)}
-.wordmark{
-  font-size:clamp(1.5rem,1.2rem + 1vw,2rem);letter-spacing:.24em;
-  text-transform:uppercase;text-align:center;line-height:1;white-space:nowrap;
-}
-.util{display:flex;justify-content:flex-end;align-items:center;gap:1.1rem}
+.nav-desk{display:flex;gap:1.6rem}
+.nav-desk button{position:relative;padding-block:.15rem}
+.nav-desk button::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:var(--basalt);transform:scaleX(0);transform-origin:left;transition:transform .28s var(--ease)}
+.nav-desk button:hover::after,.nav-desk button:focus-visible::after,.nav-desk button[aria-current="true"]::after{transform:scaleX(1)}
+.wordmark{font-size:clamp(1.5rem,1.2rem + 1vw,2rem);letter-spacing:.24em;text-transform:uppercase;text-align:center;line-height:1;white-space:nowrap}
+.util{display:flex;justify-content:flex-end;align-items:center;gap:1rem}
 .market{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
-.market button{padding:.34rem .72rem;letter-spacing:.14em;font-size:.62rem;text-transform:uppercase;white-space:nowrap}
+.market button{padding:.34rem .72rem;letter-spacing:.14em;font-size:.62rem;text-transform:uppercase;white-space:nowrap;transition:background .25s ease,color .25s ease}
 .market button[aria-pressed="true"]{background:var(--basalt);color:var(--salt)}
+.cart-btn{display:flex;align-items:center;gap:.45rem}
+.cart-btn .count{
+  min-width:1.35rem;height:1.35rem;padding-inline:.3rem;border-radius:999px;
+  background:var(--basalt);color:var(--salt);display:grid;place-items:center;
+  font-size:.66rem;transition:transform .3s var(--ease);
+}
+.cart-btn .count[data-bump="true"]{transform:scale(1.35)}
 .burger{display:none;width:2.2rem;height:2.2rem;place-items:center}
 .burger svg{width:1.3rem;height:1.3rem;stroke:var(--basalt);stroke-width:1.4;fill:none}
-.nav-mob{display:none;border-top:1px solid var(--line);padding:.5rem 0 1.1rem}
-.nav-mob ul{list-style:none;margin:0;padding:0;display:grid}
-.nav-mob a{display:block;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.nav-mob{display:none;border-top:1px solid var(--line);padding:.4rem 0 1rem}
 .nav-mob[data-open="true"]{display:block}
-
-@media(max-width:900px){
+.nav-mob button{display:block;width:100%;text-align:left;padding:.65rem 0;border-bottom:1px solid var(--line)}
+@media(max-width:940px){
   .bar{grid-template-columns:auto 1fr auto;padding:.9rem 0}
   .nav-desk{display:none}
   .burger{display:grid}
-  .wordmark{text-align:center}
-  .util .cart{display:none}
 }
+@media(max-width:520px){.cart-btn .txt{display:none}}
 
 /* ── hero ────────────────────────────────────────────────── */
 .hero{position:relative;isolation:isolate;min-height:clamp(30rem,70vh,46rem);display:grid;align-items:end}
-.slides{position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--basalt)}
+.slides{position:absolute;inset:-2.5%;z-index:-2;overflow:hidden;background:var(--basalt);will-change:transform}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.5s cubic-bezier(.4,0,.2,1)}
 .slide[data-active="true"]{opacity:1}
 .slide img{width:100%;height:100%;object-fit:cover;object-position:50% 28%;transform-origin:52% 40%}
 .slide[data-active="true"] img{animation:drift 17s ease-in-out infinite alternate}
 @keyframes drift{from{transform:scale(1.015)}to{transform:scale(1.11)}}
-.hero::after{
-  content:"";position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,rgba(23,22,20,.42) 0%,rgba(23,22,20,.08) 38%,rgba(23,22,20,.78) 100%);
-}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(23,22,20,.44) 0%,rgba(23,22,20,.08) 38%,rgba(23,22,20,.8) 100%)}
 .hero-copy{padding-block:clamp(2.5rem,6vw,5rem);color:#f6f4f0;max-width:34rem}
-.hero-copy .eyebrow{display:block;color:#cfe0dc;margin-bottom:1rem}
-.hero-copy h1{font-size:var(--step-3);line-height:1.02;letter-spacing:-.015em;text-wrap:balance;margin-bottom:1.1rem}
-.hero-copy h1 em{font-style:italic}
-.hero-copy p{margin:0 0 1.9rem;max-width:30ch;color:#e4e0da}
+.hero-copy>*{animation:rise .95s var(--ease) backwards}
+.hero-copy>.eyebrow{animation-delay:.1s;display:block;color:#cfe0dc;margin-bottom:1rem}
+.hero-copy>h1{animation-delay:.2s;font-size:var(--step-3);line-height:1.02;letter-spacing:-.015em;text-wrap:balance;margin-bottom:1.1rem}
+.hero-copy>h1 em{font-style:italic}
+.hero-copy>p{animation-delay:.32s;margin:0 0 1.9rem;max-width:30ch;color:#e4e0da}
+.hero-copy>.cta{animation-delay:.44s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 .cta{display:flex;flex-wrap:wrap;gap:.9rem 1.4rem;align-items:center}
+.dots{position:absolute;right:var(--gut);bottom:clamp(1.4rem,3.5vw,2.6rem);z-index:3;display:flex;gap:.55rem}
+.dots button{width:clamp(1.8rem,5vw,2.8rem);height:2px;padding:0;background:rgba(246,244,240,.3);position:relative;overflow:hidden}
+.dots button::before{content:"";position:absolute;inset:0;background:#f6f4f0;transform:scaleX(0);transform-origin:left}
+.dots button[aria-current="true"]::before{animation:fill 6.4s linear forwards}
+.dots button:hover::before{transform:scaleX(1)}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ── botones ─────────────────────────────────────────────── */
 .btn{
   display:inline-block;padding:.9rem 2rem;background:var(--salt);color:var(--basalt);
-  letter-spacing:.16em;font-size:.68rem;text-transform:uppercase;
-  transition:background .22s ease,color .22s ease;
+  letter-spacing:.16em;font-size:var(--step--2);text-transform:uppercase;
+  position:relative;overflow:hidden;z-index:0;text-align:center;
+  transition:color .3s ease;
 }
-.btn:hover{background:var(--sea-deep);color:#f4f2ee}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--sea-deep);transform:translateY(101%);transition:transform .45s var(--ease)}
+.btn:hover::before,.btn:focus-visible::before{transform:translateY(0)}
+.btn:hover,.btn:focus-visible{color:#f4f2ee}
 .btn-dark{background:var(--basalt);color:var(--salt)}
-.btn-dark:hover{background:var(--sea-deep)}
-.btn-ghost{
-  padding-block:.9rem;border-bottom:1px solid currentColor;
-  letter-spacing:.16em;font-size:.68rem;text-transform:uppercase;
-  transition:opacity .22s ease;
-}
+.btn-dark::before{background:var(--sea)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn[disabled]::before{display:none}
+.btn-ghost{padding-block:.9rem;border-bottom:1px solid currentColor;letter-spacing:.16em;font-size:var(--step--2);text-transform:uppercase;transition:opacity .25s ease}
 .btn-ghost:hover{opacity:.7}
+.btn-block{display:block;width:100%}
 
 /* ── secciones ───────────────────────────────────────────── */
 section{padding-block:clamp(3rem,7vw,5.5rem)}
@@ -150,58 +166,72 @@ section{padding-block:clamp(3rem,7vw,5.5rem)}
 .sec-head h2{font-size:var(--step-2);letter-spacing:-.005em}
 .sec-head .lab{color:var(--basalt-soft)}
 
-/* fotos: marco fijo para que no haya salto de maquetación */
 .frame{position:relative;overflow:hidden;background:var(--line);aspect-ratio:3/4}
-.frame img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.3,1)}
-a:hover .frame img,.card:hover .frame img{transform:scale(1.045)}
-@media(prefers-reduced-motion:reduce){.frame img{transition:none}a:hover .frame img,.card:hover .frame img{transform:none}}
+.frame img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.coll:hover .frame img,.card:hover .frame img{transform:scale(1.05)}
 
 /* colecciones */
 .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.7rem,1.6vw,1.25rem)}
 @media(max-width:760px){.trio{grid-template-columns:1fr}.trio .frame{aspect-ratio:4/3}}
-.coll{display:block}
-.coll .frame{aspect-ratio:3/4}
+.coll{display:block;text-align:left;width:100%}
 .coll figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;padding-top:.8rem}
 .coll .nm{font-size:var(--step-1)}
 .coll .ct{color:var(--dune);font-size:var(--step--1)}
 
-/* rejilla de producto */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.2vw,1.9rem) clamp(.7rem,1.6vw,1.25rem)}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:420px){.grid{grid-template-columns:1fr}}
-.card{display:grid;gap:.65rem;align-content:start}
-.card h3{font-size:var(--step-0);line-height:1.35}
-.flag{
-  position:absolute;top:.75rem;left:.75rem;z-index:2;
-  background:var(--wine);color:#f8f2f2;padding:.24rem .55rem;
+/* ── filtros ─────────────────────────────────────────────── */
+.tools{display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;margin-bottom:1.6rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chips button{
+  padding:.42rem 1rem;border:1px solid var(--line);border-radius:999px;
+  font-size:var(--step--1);transition:background .25s ease,color .25s ease,border-color .25s ease;
 }
-.flag.soft{background:var(--paper);color:var(--basalt)}
-.price{display:flex;gap:.6rem;align-items:baseline;font-variant-numeric:tabular-nums}
-.price .was{color:var(--dune);text-decoration:line-through;font-size:var(--step--1)}
-.sizes{display:flex;gap:.35rem;flex-wrap:wrap}
-.sizes button{
-  min-width:2rem;height:2rem;padding-inline:.3rem;border:1px solid var(--line);
-  font-size:.7rem;letter-spacing:.04em;display:grid;place-items:center;
-  transition:background .2s ease,color .2s ease,border-color .2s ease;
-}
-.sizes button:hover:not([disabled]){border-color:var(--basalt)}
-.sizes button[aria-pressed="true"]{background:var(--basalt);color:var(--salt);border-color:var(--basalt)}
-.sizes button[disabled]{color:var(--dune);border-style:dashed;cursor:not-allowed;text-decoration:line-through}
+.chips button:hover{border-color:var(--basalt)}
+.chips button[aria-pressed="true"]{background:var(--basalt);color:var(--salt);border-color:var(--basalt)}
+.tool-right{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.search{display:flex;align-items:center;gap:.5rem;border:1px solid var(--line);border-radius:999px;padding:.3rem .9rem;background:var(--paper)}
+.search input{border:none;background:none;outline:none;width:9rem;font-size:var(--step--1);font-weight:300}
+.search svg{width:.95rem;height:.95rem;stroke:var(--dune);stroke-width:1.5;fill:none;flex:none}
+.sortsel{border:1px solid var(--line);border-radius:999px;padding:.42rem .9rem;background:var(--paper);font-size:var(--step--1)}
 
-/* banda editorial */
+/* ── rejilla de producto ─────────────────────────────────── */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(1rem,2.2vw,1.9rem) clamp(.7rem,1.6vw,1.25rem)}
+@media(max-width:1040px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:780px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.grid{grid-template-columns:1fr}}
+.card{display:grid;gap:.6rem;align-content:start;text-align:left}
+.card .frame{cursor:pointer}
+.card h3{font-size:var(--step-0);line-height:1.35}
+.flag{position:absolute;top:.7rem;left:.7rem;z-index:2;background:var(--wine);color:#f8f2f2;padding:.24rem .55rem}
+.flag.soft{background:var(--paper);color:var(--basalt)}
+.flag.out{background:var(--basalt);color:var(--salt)}
+.price{display:flex;gap:.55rem;align-items:baseline}
+.price .was{color:var(--dune);text-decoration:line-through;font-size:var(--step--1)}
+.card .meta{color:var(--dune);font-size:var(--step--1)}
+.quick{
+  position:absolute;left:.55rem;right:.55rem;bottom:.55rem;z-index:2;
+  background:rgba(23,22,20,.86);color:#f4f2ee;padding:.62rem;
+  letter-spacing:.14em;font-size:.63rem;text-transform:uppercase;text-align:center;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  transform:translateY(calc(100% + .55rem));transition:transform .42s var(--ease),background .25s ease;
+}
+.card:hover .quick,.card:focus-within .quick{transform:translateY(0)}
+.quick:hover{background:var(--sea-deep)}
+@media(hover:none){.quick{transform:translateY(0);background:rgba(23,22,20,.72)}}
+.empty{padding:3rem 0;text-align:center;color:var(--basalt-soft);grid-column:1/-1}
+
+/* ── banda editorial ─────────────────────────────────────── */
 .editorial{background:var(--paper)}
 .ed-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.5rem,4vw,4rem);align-items:center}
 @media(max-width:860px){.ed-grid{grid-template-columns:1fr}}
-.ed-grid .frame{aspect-ratio:5/4}
 .ed-copy .eyebrow{display:block;color:var(--sea);margin-bottom:.9rem}
 .ed-copy h2{font-size:var(--step-2);line-height:1.1;margin-bottom:1rem;text-wrap:balance}
 .ed-copy p{margin:0 0 1rem;color:var(--basalt-soft);max-width:44ch}
 
-/* servicio */
-.service{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0}
-.service-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+/* ── servicio ────────────────────────────────────────────── */
+.service{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding-block:0}
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr);padding-inline:0;margin:0}
 @media(max-width:760px){.service-grid{grid-template-columns:1fr}}
-.service-grid>div{padding:clamp(1.4rem,3vw,2.2rem) clamp(1rem,2vw,1.8rem);border-right:1px solid var(--line)}
+.service-grid>div{padding:clamp(1.4rem,3vw,2.2rem) clamp(1.1rem,2vw,1.8rem);border-right:1px solid var(--line)}
 .service-grid>div:last-child{border-right:none}
 @media(max-width:760px){
   .service-grid>div{border-right:none;border-bottom:1px solid var(--line)}
@@ -210,17 +240,16 @@ a:hover .frame img,.card:hover .frame img{transform:scale(1.045)}
 .service dt{margin-bottom:.5rem;color:var(--sea)}
 .service dd{margin:0;color:var(--basalt-soft);max-width:32ch;font-size:var(--step--1)}
 
-/* whatsapp */
+/* ── whatsapp ────────────────────────────────────────────── */
 .wa{background:var(--basalt);color:#f3f1ec;text-align:center}
 .wa .inner{max-width:38rem;margin-inline:auto}
 .wa .eyebrow{display:block;color:#9ec4bd;margin-bottom:.9rem}
 .wa h2{font-size:var(--step-2);line-height:1.12;margin-bottom:.9rem;text-wrap:balance}
 .wa p{margin:0 auto 1.8rem;color:#c9c4bb;max-width:42ch}
 .wa .hours{margin-top:1.2rem;color:var(--dune);font-size:var(--step--1)}
-.wa .btn{background:var(--salt);color:var(--basalt)}
-.wa .btn:hover{background:var(--sea);color:#f4f2ee}
+.wa .btn::before{background:var(--sea)}
 
-/* pie */
+/* ── pie ─────────────────────────────────────────────────── */
 footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-dark)}
 .fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:clamp(1.5rem,3vw,2.5rem);padding-block:clamp(2.5rem,5vw,3.5rem)}
 @media(max-width:760px){.fgrid{grid-template-columns:1fr 1fr}}
@@ -230,109 +259,144 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
 .fcol .lab{display:block;color:var(--dune);margin-bottom:1rem}
 .fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:.55rem;font-size:var(--step--1)}
 .fcol a:hover{text-decoration:underline;text-underline-offset:3px}
-.legal{
-  border-top:1px solid var(--line-dark);padding-block:1.1rem 1.5rem;
-  display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;justify-content:space-between;color:var(--dune);
-}
+.legal{border-top:1px solid var(--line-dark);padding-block:1.1rem 1.5rem;display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;justify-content:space-between;color:var(--dune)}
 
-/* nota de maqueta */
-.mock{background:var(--sea-deep);color:#e3efec}
-.mock .shell{padding-block:1.6rem;display:grid;gap:.45rem}
-.mock .lab{color:#a9cdc6}
-.mock p{margin:0;font-size:var(--step--1);max-width:72ch;color:#d3e3e0}
-.mock a{text-decoration:underline;text-underline-offset:3px}
+/* ── nota de demo ────────────────────────────────────────── */
+.demo-note{background:var(--sea-deep);color:#e3efec}
+.demo-note .shell{padding-block:1.6rem;display:grid;gap:.45rem}
+.demo-note .lab{color:#a9cdc6}
+.demo-note p{margin:0;font-size:var(--step--1);max-width:74ch;color:#d3e3e0}
+.demo-note a{text-decoration:underline;text-underline-offset:3px}
 
-/* botón flotante */
+/* ── botón flotante ──────────────────────────────────────── */
 .float{
-  position:fixed;right:clamp(.9rem,2vw,1.6rem);bottom:clamp(.9rem,2vw,1.6rem);z-index:120;
+  position:fixed;right:clamp(.9rem,2vw,1.6rem);bottom:clamp(.9rem,2vw,1.6rem);z-index:80;
   display:flex;align-items:center;gap:.55rem;
   background:var(--sea-deep);color:#f1f7f5;padding:.7rem 1.1rem;border-radius:999px;
   box-shadow:0 6px 24px rgba(23,22,20,.26);
   font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
-  transition:transform .22s ease,background .22s ease;
+  transition:transform .25s var(--ease),background .25s ease;
 }
 .float:hover{background:var(--sea);transform:translateY(-2px)}
 .float svg{width:1.05rem;height:1.05rem;stroke:currentColor;stroke-width:1.5;fill:none;flex:none}
 @media(max-width:520px){.float span{display:none}.float{padding:.85rem;border-radius:50%}}
-.float::after{
-  content:"";position:absolute;inset:0;border-radius:inherit;
-  border:1px solid var(--sea);pointer-events:none;
-  animation:ring 3.2s ease-out infinite;
-}
+.float::after{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--sea);pointer-events:none;animation:ring 3.2s ease-out infinite}
 @keyframes ring{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.4);opacity:0}100%{transform:scale(1.4);opacity:0}}
 
-/* ──────────────────────────────────────────────────────────────
-   MOVIMIENTO
-   Regla de oro: el estado de reposo es el estado visible. Nada
-   queda escondido esperando un observador — si el JS no corre o
-   el visitante pide menos movimiento, la página se lee completa.
-   ────────────────────────────────────────────────────────────── */
-
-/* marquesina de servicio */
-.ticker{overflow:hidden;padding-inline:0}
-.marquee{display:flex;width:max-content;animation:slide 44s linear infinite}
-.ticker:hover .marquee,.ticker:focus-within .marquee{animation-play-state:paused}
-.mgroup{display:flex;flex:none}
-.mgroup span{padding-inline:1.5rem;white-space:nowrap;position:relative}
-.mgroup span::after{content:"";position:absolute;right:0;top:50%;width:3px;height:3px;border-radius:50%;background:var(--dune)}
-@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* entrada del hero */
-.hero-copy>*{animation:rise .95s cubic-bezier(.16,.8,.28,1) backwards}
-.hero-copy>.eyebrow{animation-delay:.1s}
-.hero-copy>h1{animation-delay:.2s}
-.hero-copy>p{animation-delay:.32s}
-.hero-copy>.cta{animation-delay:.44s}
-@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-
-/* indicadores del hero */
-.dots{
-  position:absolute;right:var(--gut);bottom:clamp(1.4rem,3.5vw,2.6rem);
-  z-index:3;display:flex;gap:.55rem;
+/* ── capas: ficha, carrito, aviso ────────────────────────── */
+.scrim{
+  position:fixed;inset:0;z-index:150;background:rgba(23,22,20,.52);
+  backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  opacity:0;pointer-events:none;transition:opacity .4s ease;
 }
-.dots button{
-  width:clamp(1.8rem,5vw,2.8rem);height:2px;padding:0;
-  background:rgba(246,244,240,.3);position:relative;overflow:hidden;
-}
-.dots button::before{
-  content:"";position:absolute;inset:0;background:#f6f4f0;
-  transform:scaleX(0);transform-origin:left;
-}
-.dots button[aria-current="true"]::before{animation:fill 6.4s linear forwards}
-.dots button:hover::before{transform:scaleX(1)}
-@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.scrim[data-open="true"]{opacity:1;pointer-events:auto}
 
-/* aparición al desplazar — las clases las pone el JS, nunca el CSS base */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(27rem,100%);z-index:160;
+  background:var(--white);display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .5s var(--ease);
+  box-shadow:-12px 0 40px rgba(23,22,20,.16);
+}
+.drawer[data-open="true"]{transform:translateX(0)}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.3rem var(--gut);border-bottom:1px solid var(--line)}
+.drawer-body{flex:1;overflow-y:auto;padding:1.2rem var(--gut)}
+.drawer-foot{border-top:1px solid var(--line);padding:1.2rem var(--gut);display:grid;gap:.9rem;background:var(--paper)}
+.x{width:2.1rem;height:2.1rem;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;transition:background .25s ease,color .25s ease}
+.x:hover{background:var(--basalt);color:var(--salt)}
+.x svg{width:.85rem;height:.85rem;stroke:currentColor;stroke-width:1.6;fill:none}
+
+.line-item{display:grid;grid-template-columns:4.6rem 1fr;gap:.9rem;padding-block:1rem;border-bottom:1px solid var(--line)}
+.line-item:last-child{border-bottom:none}
+.line-item .frame{aspect-ratio:3/4}
+.li-top{display:flex;justify-content:space-between;gap:.6rem;align-items:start}
+.line-item h4{margin:0;font-size:var(--step--1);font-weight:400;line-height:1.35}
+.line-item .sz{color:var(--dune);font-size:var(--step--2);letter-spacing:.1em;text-transform:uppercase}
+.qty{display:flex;align-items:center;gap:.1rem;border:1px solid var(--line);width:max-content;margin-top:.5rem}
+.qty button{width:1.7rem;height:1.7rem;display:grid;place-items:center;font-size:.9rem;line-height:1;transition:background .2s ease,color .2s ease}
+.qty button:hover{background:var(--basalt);color:var(--salt)}
+.qty span{min-width:1.9rem;text-align:center;font-size:var(--step--1)}
+.li-bot{display:flex;justify-content:space-between;align-items:center;gap:.6rem;margin-top:.3rem}
+.drop{color:var(--dune);font-size:var(--step--2);letter-spacing:.1em;text-transform:uppercase;transition:color .2s ease}
+.drop:hover{color:var(--wine)}
+.totals{display:grid;gap:.4rem;font-size:var(--step--1)}
+.totals div{display:flex;justify-content:space-between;gap:1rem}
+.totals .grand{font-size:var(--step-0);padding-top:.5rem;border-top:1px solid var(--line);margin-top:.3rem}
+.ship-hint{color:var(--sea);font-size:var(--step--2)}
+.drawer .empty-cart{text-align:center;padding:3rem 0;color:var(--basalt-soft)}
+
+/* ficha de producto */
+.sheet{
+  position:fixed;left:50%;top:50%;z-index:160;
+  width:min(58rem,calc(100% - 2rem));max-height:min(44rem,calc(100% - 2rem));
+  background:var(--white);display:grid;grid-template-columns:1fr 1fr;
+  transform:translate(-50%,-48%) scale(.97);opacity:0;pointer-events:none;
+  transition:transform .45s var(--ease),opacity .35s ease;
+  box-shadow:0 24px 70px rgba(23,22,20,.3);overflow:hidden;
+}
+.sheet[data-open="true"]{transform:translate(-50%,-50%) scale(1);opacity:1;pointer-events:auto}
+.sheet .pic{position:relative;overflow:hidden;background:var(--line)}
+.sheet .pic img{width:100%;height:100%;object-fit:cover}
+.sheet .info{padding:clamp(1.4rem,3vw,2.2rem);overflow-y:auto;display:grid;gap:.9rem;align-content:start}
+.sheet .x{position:absolute;top:.8rem;right:.8rem;z-index:3;background:var(--white)}
+.sheet h3{font-size:var(--step-2);line-height:1.1}
+.sheet .desc{color:var(--basalt-soft);font-size:var(--step--1);margin:0}
+.spec{display:grid;gap:.3rem;font-size:var(--step--2);color:var(--basalt-soft);border-top:1px solid var(--line);padding-top:.8rem}
+.spec div{display:flex;justify-content:space-between;gap:1rem}
+@media(max-width:760px){
+  .sheet{grid-template-columns:1fr;max-height:calc(100% - 1.5rem);width:calc(100% - 1.5rem)}
+  .sheet .pic{aspect-ratio:4/3}
+}
+
+.sizes{display:flex;gap:.35rem;flex-wrap:wrap}
+.sizes button{
+  min-width:2.3rem;height:2.3rem;padding-inline:.4rem;border:1px solid var(--line);
+  font-size:var(--step--1);display:grid;place-items:center;
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+.sizes button:hover:not([disabled]){border-color:var(--basalt)}
+.sizes button[aria-pressed="true"]{background:var(--basalt);color:var(--salt);border-color:var(--basalt)}
+.sizes button[disabled]{color:var(--dune);border-style:dashed;cursor:not-allowed;text-decoration:line-through}
+.size-note{color:var(--dune);font-size:var(--step--2);min-height:1.2em}
+
+/* confirmación */
+.done{text-align:center;display:grid;gap:.6rem;padding:1rem 0}
+.done .mark{width:3rem;height:3rem;border-radius:50%;border:1px solid var(--sea);display:grid;place-items:center;margin:0 auto .4rem;color:var(--sea)}
+.done .mark svg{width:1.1rem;height:1.1rem;stroke:currentColor;stroke-width:1.6;fill:none}
+.done h4{margin:0;font-size:var(--step-1)}
+.done p{margin:0;color:var(--basalt-soft);font-size:var(--step--1)}
+.done .ref{font-size:var(--step--2);letter-spacing:.14em;text-transform:uppercase;color:var(--dune)}
+
+/* avisos */
+.toasts{position:fixed;left:50%;bottom:1.4rem;z-index:200;transform:translateX(-50%);display:grid;gap:.5rem;width:max-content;max-width:calc(100% - 2rem);pointer-events:none}
+.toast{
+  background:var(--basalt);color:#f4f2ee;padding:.75rem 1.2rem;
+  font-size:var(--step--1);display:flex;align-items:center;gap:.6rem;
+  animation:pop .45s var(--ease) both;box-shadow:0 8px 28px rgba(23,22,20,.28);
+}
+.toast[data-out="true"]{animation:unpop .35s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes unpop{to{opacity:0;transform:translateY(8px)}}
+
+/* ── aparición al desplazar ──────────────────────────────── */
+/* Las clases las pone el JS. El CSS base nunca esconde nada. */
 .rv{opacity:0;transform:translateY(18px)}
-.rv-in{
-  opacity:1;transform:none;
-  transition:opacity .85s cubic-bezier(.16,.8,.28,1),transform .85s cubic-bezier(.16,.8,.28,1);
+.rv-in{opacity:1;transform:none;transition:opacity .85s var(--ease),transform .85s var(--ease)}
+
+/* ── fluido del cursor ───────────────────────────────────── */
+/* Fluido que arrastra tinta tras el puntero. Va por encima de
+   la página pero sin recibir pulsaciones, y por debajo de la
+   cesta y la ficha para que comprar no se vea alterado.      */
+/* Ojo: el canvas es un elemento reemplazado, así que «inset:0»
+   NO lo estira — se quedaría en sus 300x150 intrínsecos. Hay
+   que darle ancho y alto explícitos.                          */
+#flow{
+  position:fixed;top:0;left:0;
+  width:100%;height:100%;
+  z-index:100;display:block;
+  pointer-events:none;
 }
 
-/* barrido de los botones */
-.btn{position:relative;overflow:hidden;z-index:0}
-.btn::before{
-  content:"";position:absolute;inset:0;z-index:-1;background:var(--sea-deep);
-  transform:translateY(101%);transition:transform .45s cubic-bezier(.16,.8,.28,1);
-}
-.btn:hover::before,.btn:focus-visible::before{transform:translateY(0)}
-.btn-dark::before{background:var(--sea)}
-.wa .btn::before{background:var(--sea)}
-
-/* añadir rápido sobre la foto */
-.quick{
-  position:absolute;left:.55rem;right:.55rem;bottom:.55rem;z-index:2;
-  background:rgba(23,22,20,.86);color:#f4f2ee;padding:.62rem;
-  letter-spacing:.14em;font-size:.63rem;text-transform:uppercase;text-align:center;
-  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
-  transform:translateY(calc(100% + .55rem));
-  transition:transform .42s cubic-bezier(.16,.8,.28,1),background .25s ease;
-}
-.card:hover .quick,.card:focus-within .quick{transform:translateY(0)}
-.quick:hover{background:var(--sea-deep)}
-@media(hover:none){.quick{transform:translateY(0);background:rgba(23,22,20,.7)}}
-
-/* el interruptor general */
+/* ── el interruptor general del movimiento ───────────────── */
 @media(prefers-reduced-motion:reduce){
   .marquee{animation:none;width:100%;justify-content:center}
   .mgroup.dup{display:none}
@@ -341,16 +405,18 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
   .hero-copy>*{animation:none}
   .dots button[aria-current="true"]::before{animation:none;transform:scaleX(1)}
   .rv{opacity:1;transform:none}
-  .rv-in{transition:none}
-  .btn::before{transition:none}
-  .quick{transition:none;transform:translateY(0)}
+  .rv-in,.frame img,.btn::before,.quick,.float{transition:none}
+  .quick{transform:translateY(0)}
   .float::after{animation:none;opacity:0}
+  .toast{animation:none}
+  #flow{display:none}
+  .drawer,.sheet,.scrim{transition:none}
 }
 </style>
 </head>
 <body>
 
-<a class="skip" href="#contenido">Saltar al contenido</a>
+<a class="skip" href="#catalogo">Saltar al catálogo</a>
 
 <div class="ticker">
   <div class="marquee">
@@ -373,65 +439,50 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
       <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="nav-mob" aria-label="Abrir menú">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
-      <nav class="nav-desk" aria-label="Principal">
-        <a href="#novedades">Novedades</a>
-        <a href="#vestidos">Vestidos</a>
-        <a href="#punto">Punto</a>
-        <a href="#abrigos">Abrigos</a>
-      </nav>
+      <nav class="nav-desk" id="nav-desk" aria-label="Categorías"></nav>
       <a class="wordmark serif" href="#top">Maresía</a>
       <div class="util">
         <div class="market" role="group" aria-label="Mercado y moneda">
           <button type="button" id="btn-es" aria-pressed="true">España €</button>
           <button type="button" id="btn-mx" aria-pressed="false">México $</button>
         </div>
-        <a class="lab cart" href="#">Carrito (0)</a>
+        <button class="cart-btn lab" type="button" id="open-cart" aria-haspopup="dialog">
+          <span class="txt">Cesta</span>
+          <span class="count num" id="cart-count" data-bump="false">0</span>
+        </button>
       </div>
     </div>
-    <nav class="nav-mob" id="nav-mob" aria-label="Principal móvil">
-      <ul>
-        <li><a href="#novedades">Novedades</a></li>
-        <li><a href="#vestidos">Vestidos</a></li>
-        <li><a href="#punto">Punto</a></li>
-        <li><a href="#abrigos">Abrigos</a></li>
-      </ul>
-    </nav>
+    <nav class="nav-mob" id="nav-mob" aria-label="Categorías móvil"></nav>
   </div>
 </header>
 
-<main id="contenido">
+<main>
 
   <!-- ── hero ───────────────────────────────────────────── -->
   <div class="hero" id="top">
-    <div class="slides">
+    <div class="slides" id="slides">
       <div class="slide" data-active="true">
-        <img
-          src="https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=1600&q=80"
-          srcset="https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=900&q=75 900w,
-                  https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=1600&q=80 1600w,
-                  https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=2200&q=80 2200w"
-          sizes="100vw"
-          alt="Mujer con gabardina gris de talle largo en la calle, luz de otoño"
-          fetchpriority="high" width="1600" height="1067">
+        <img src="https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=1600&q=80"
+             srcset="https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=900&q=75 900w,
+                     https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=1600&q=80 1600w,
+                     https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=2200&q=80 2200w"
+             sizes="100vw" alt="Mujer con gabardina gris en la calle, luz de otoño"
+             fetchpriority="high" width="1600" height="1067">
       </div>
       <div class="slide">
-        <img
-          src="https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=1600"
-          srcset="https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
-                  https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=1600 1600w,
-                  https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=2200 2200w"
-          sizes="100vw"
-          alt="Grupo de mujeres con ropa de temporada en una calle arbolada en otoño"
-          loading="lazy" width="1600" height="1067">
+        <img src="https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=1600"
+             srcset="https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                     https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=1600 1600w,
+                     https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=2200 2200w"
+             sizes="100vw" alt="Grupo de mujeres con ropa de temporada en una calle arbolada en otoño"
+             loading="lazy" width="1600" height="1067">
       </div>
       <div class="slide">
-        <img
-          src="https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=1600"
-          srcset="https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
-                  https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=1600 1600w"
-          sizes="100vw"
-          alt="Mujer elegante con gafas de sol posando al aire libre"
-          loading="lazy" width="1600" height="1067">
+        <img src="https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=1600"
+             srcset="https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                     https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=1600 1600w"
+             sizes="100vw" alt="Mujer elegante con gafas de sol posando al aire libre"
+             loading="lazy" width="1600" height="1067">
       </div>
     </div>
     <div class="dots" role="group" aria-label="Imágenes de portada">
@@ -444,8 +495,8 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
       <h1 class="serif">La temporada se mide en <em>capas</em></h1>
       <p>Punto grueso, lanas lavables y siluetas que aguantan el viento de octubre. Seleccionado pieza a pieza, no por catálogo.</p>
       <div class="cta">
-        <a class="btn" href="#novedades">Ver novedades</a>
-        <a class="btn-ghost" href="#vestidos">Vestidos de temporada</a>
+        <a class="btn" href="#catalogo">Ver el catálogo</a>
+        <button class="btn-ghost" type="button" data-go="Vestidos">Vestidos de temporada</button>
       </div>
     </div>
   </div>
@@ -454,186 +505,69 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
   <section class="shell">
     <div class="sec-head">
       <h2 class="serif">Colecciones</h2>
-      <a class="lab" href="#novedades">Ver todo</a>
+      <button class="lab btn-ghost" type="button" data-go="Todo" style="border:none;padding:0">Ver todo</button>
     </div>
     <div class="trio">
-
-      <a class="coll" href="#novedades" id="vestidos">
+      <button class="coll" type="button" data-go="Vestidos">
         <figure style="margin:0">
           <div class="frame">
             <img src="https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=900"
                  srcset="https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
-                         https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
-                         https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=1300 1300w"
-                 sizes="(max-width:760px) 92vw, 31vw"
-                 alt="Mujer con vestido negro de manga larga entre árboles en otoño"
+                         https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
+                 sizes="(max-width:760px) 92vw, 31vw" alt="Mujer con vestido negro de manga larga entre árboles en otoño"
                  loading="lazy" width="900" height="1200">
           </div>
-          <figcaption><span class="nm serif">Vestidos</span><span class="ct">14 piezas</span></figcaption>
+          <figcaption><span class="nm serif">Vestidos</span><span class="ct" data-count="Vestidos"></span></figcaption>
         </figure>
-      </a>
-
-      <a class="coll" href="#novedades" id="punto">
+      </button>
+      <button class="coll" type="button" data-go="Punto">
         <figure style="margin:0">
           <div class="frame">
             <img src="https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=900&q=80"
                  srcset="https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=600&q=75 600w,
-                         https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=900&q=80 900w,
-                         https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=1300&q=80 1300w"
-                 sizes="(max-width:760px) 92vw, 31vw"
-                 alt="Mujer con jersey de punto blanco de cuello alto"
+                         https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=900&q=80 900w"
+                 sizes="(max-width:760px) 92vw, 31vw" alt="Mujer con jersey de punto blanco de cuello alto"
                  loading="lazy" width="900" height="1200">
           </div>
-          <figcaption><span class="nm serif">Punto</span><span class="ct">11 piezas</span></figcaption>
+          <figcaption><span class="nm serif">Punto</span><span class="ct" data-count="Punto"></span></figcaption>
         </figure>
-      </a>
-
-      <a class="coll" href="#novedades" id="abrigos">
+      </button>
+      <button class="coll" type="button" data-go="Abrigos">
         <figure style="margin:0">
           <div class="frame">
             <img src="https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=900"
                  srcset="https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
-                         https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
-                         https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=1300 1300w"
-                 sizes="(max-width:760px) 92vw, 31vw"
-                 alt="Mujer paseando por un parque en otoño con abrigo y bufanda"
+                         https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
+                 sizes="(max-width:760px) 92vw, 31vw" alt="Mujer paseando por un parque en otoño con abrigo y bufanda"
                  loading="lazy" width="900" height="1200">
           </div>
-          <figcaption><span class="nm serif">Abrigos</span><span class="ct">8 piezas</span></figcaption>
+          <figcaption><span class="nm serif">Abrigos</span><span class="ct" data-count="Abrigos"></span></figcaption>
         </figure>
-      </a>
-
+      </button>
     </div>
   </section>
 
-  <!-- ── novedades ──────────────────────────────────────── -->
-  <section class="shell" id="novedades">
+  <!-- ── catálogo ───────────────────────────────────────── -->
+  <section class="shell" id="catalogo">
     <div class="sec-head">
-      <h2 class="serif">Novedades</h2>
-      <span class="lab">32 productos</span>
+      <h2 class="serif">Catálogo</h2>
+      <span class="lab" id="result-count"></span>
     </div>
-    <div class="grid">
-
-      <article class="card">
-        <div class="frame">
-          <img src="https://images.pexels.com/photos/19389008/pexels-photo-19389008.jpeg?auto=compress&cs=tinysrgb&w=900"
-               srcset="https://images.pexels.com/photos/19389008/pexels-photo-19389008.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
-                       https://images.pexels.com/photos/19389008/pexels-photo-19389008.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
-               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
-               alt="Vestido largo fluido en tono naranja sobre escalones de piedra"
-               loading="lazy" width="900" height="1200">
-        </div>
-        <h3>Vestido largo satinado</h3>
-        <div class="price"><span class="now" data-eur="59,95 €" data-mxn="1.319 $">59,95 €</span></div>
-        <div class="sizes" role="group" aria-label="Tallas de Vestido largo satinado">
-          <button type="button" aria-pressed="false">S</button>
-          <button type="button" aria-pressed="true">M</button>
-          <button type="button" aria-pressed="false">L</button>
-          <button type="button" aria-pressed="false">XL</button>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="frame">
-          <img src="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=900&q=80"
-               srcset="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=600&q=75 600w,
-                       https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=900&q=80 900w"
-               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
-               alt="Mujer con blazer blanco de corte amplio"
-               loading="lazy" width="900" height="1200">
-        </div>
-        <h3>Blazer oversize de lana</h3>
-        <div class="price"><span class="now" data-eur="79,95 €" data-mxn="1.749 $">79,95 €</span></div>
-        <div class="sizes" role="group" aria-label="Tallas de Blazer oversize de lana">
-          <button type="button" aria-pressed="false">S</button>
-          <button type="button" aria-pressed="false">M</button>
-          <button type="button" aria-pressed="false">L</button>
-          <button type="button" aria-pressed="false">XL</button>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="frame">
-          <span class="lab flag">Últimas tallas</span>
-          <img src="https://images.unsplash.com/photo-1587999882859-34b3f313df77?auto=format&fit=crop&w=900&q=80"
-               srcset="https://images.unsplash.com/photo-1587999882859-34b3f313df77?auto=format&fit=crop&w=600&q=75 600w,
-                       https://images.unsplash.com/photo-1587999882859-34b3f313df77?auto=format&fit=crop&w=900&q=80 900w"
-               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
-               alt="Mujer con jersey de punto color crema sentada en un campo"
-               loading="lazy" width="900" height="1200">
-        </div>
-        <h3>Jersey de punto trenzado</h3>
-        <div class="price">
-          <span class="now" data-eur="39,95 €" data-mxn="879 $">39,95 €</span>
-          <span class="was" data-eur="54,95 €" data-mxn="1.209 $">54,95 €</span>
-        </div>
-        <div class="sizes" role="group" aria-label="Tallas de Jersey de punto trenzado">
-          <button type="button" disabled aria-pressed="false">S</button>
-          <button type="button" aria-pressed="false">M</button>
-          <button type="button" aria-pressed="false">L</button>
-          <button type="button" disabled aria-pressed="false">XL</button>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="frame">
-          <img src="https://images.pexels.com/photos/6138908/pexels-photo-6138908.jpeg?auto=compress&cs=tinysrgb&w=900"
-               srcset="https://images.pexels.com/photos/6138908/pexels-photo-6138908.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
-                       https://images.pexels.com/photos/6138908/pexels-photo-6138908.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
-               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
-               alt="Mujer con falda negra y gafas de sol en una calle de ciudad"
-               loading="lazy" width="900" height="1200">
-        </div>
-        <h3>Falda midi de tiro alto</h3>
-        <div class="price"><span class="now" data-eur="35,95 €" data-mxn="789 $">35,95 €</span></div>
-        <div class="sizes" role="group" aria-label="Tallas de Falda midi de tiro alto">
-          <button type="button" aria-pressed="false">S</button>
-          <button type="button" aria-pressed="false">M</button>
-          <button type="button" aria-pressed="false">L</button>
-          <button type="button" aria-pressed="false">XL</button>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="frame">
-          <span class="lab flag soft">Nuevo</span>
-          <img src="https://images.pexels.com/photos/6209914/pexels-photo-6209914.jpeg?auto=compress&cs=tinysrgb&w=900"
-               srcset="https://images.pexels.com/photos/6209914/pexels-photo-6209914.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
-                       https://images.pexels.com/photos/6209914/pexels-photo-6209914.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
-               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
-               alt="Mujer con abrigo y sombrero caminando por un sendero cubierto de hojas"
-               loading="lazy" width="900" height="1200">
-        </div>
-        <h3>Gabardina cruzada</h3>
-        <div class="price"><span class="now" data-eur="94,95 €" data-mxn="2.089 $">94,95 €</span></div>
-        <div class="sizes" role="group" aria-label="Tallas de Gabardina cruzada">
-          <button type="button" aria-pressed="false">S</button>
-          <button type="button" aria-pressed="false">M</button>
-          <button type="button" aria-pressed="false">L</button>
-          <button type="button" disabled aria-pressed="false">XL</button>
-        </div>
-      </article>
-
-      <article class="card">
-        <div class="frame">
-          <img src="https://images.pexels.com/photos/36503930/pexels-photo-36503930.jpeg?auto=compress&cs=tinysrgb&w=900"
-               srcset="https://images.pexels.com/photos/36503930/pexels-photo-36503930.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
-                       https://images.pexels.com/photos/36503930/pexels-photo-36503930.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
-               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
-               alt="Mujer con vestido de cuadros rojo sosteniendo hojas de otoño"
-               loading="lazy" width="900" height="1200">
-        </div>
-        <h3>Vestido midi de cuadros</h3>
-        <div class="price"><span class="now" data-eur="49,95 €" data-mxn="1.099 $">49,95 €</span></div>
-        <div class="sizes" role="group" aria-label="Tallas de Vestido midi de cuadros">
-          <button type="button" aria-pressed="false">S</button>
-          <button type="button" aria-pressed="false">M</button>
-          <button type="button" aria-pressed="true">L</button>
-          <button type="button" aria-pressed="false">XL</button>
-        </div>
-      </article>
-
+    <div class="tools">
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por categoría"></div>
+      <div class="tool-right">
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.5-4.5"/></svg>
+          <input type="search" id="q" placeholder="Buscar prenda" aria-label="Buscar prenda">
+        </label>
+        <select class="sortsel" id="sort" aria-label="Ordenar">
+          <option value="new">Novedades</option>
+          <option value="asc">Precio: menor a mayor</option>
+          <option value="desc">Precio: mayor a menor</option>
+        </select>
+      </div>
     </div>
+    <div class="grid" id="grid"></div>
   </section>
 
   <!-- ── banda editorial ────────────────────────────────── -->
@@ -643,26 +577,25 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
         <img src="https://images.pexels.com/photos/31884491/pexels-photo-31884491.jpeg?auto=compress&cs=tinysrgb&w=1200"
              srcset="https://images.pexels.com/photos/31884491/pexels-photo-31884491.jpeg?auto=compress&cs=tinysrgb&w=700 700w,
                      https://images.pexels.com/photos/31884491/pexels-photo-31884491.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w"
-             sizes="(max-width:860px) 92vw, 48vw"
-             alt="Dos mujeres con conjuntos de temporada bajo palmeras"
+             sizes="(max-width:860px) 92vw, 48vw" alt="Dos mujeres con conjuntos de temporada bajo palmeras"
              loading="lazy" width="1200" height="960">
       </div>
       <div class="ed-copy">
         <span class="lab eyebrow">Desde Canarias</span>
         <h2 class="serif">Ropa pensada para un invierno templado</h2>
         <p>Aquí el frío no llega como en la península, así que la selección se hace a otra escala: capas ligeras, punto fino y tejidos que funcionan a veinte grados y con viento.</p>
-        <p>Enviamos a toda España, a la Unión Europea y a México, con las tallas y las medidas reales de cada prenda publicadas en su ficha.</p>
-        <a class="btn btn-dark" href="#novedades">Ver la selección</a>
+        <p>Enviamos a toda España, a la Unión Europea y a México, con las medidas reales de cada prenda publicadas en su ficha.</p>
+        <button class="btn btn-dark" type="button" data-go="Todo">Ver la selección</button>
       </div>
     </div>
   </section>
 
   <!-- ── servicio ───────────────────────────────────────── -->
-  <section class="service" style="padding-block:0">
-    <dl class="shell service-grid" style="padding-inline:0;margin:0">
-      <div><dt class="lab">Envío</dt><dd id="svc-ship">48-72 h en península. Canarias en 3-5 días, con el IGIC calculado en el pedido.</dd></div>
-      <div><dt class="lab">Devoluciones</dt><dd id="svc-ret">14 días para cambiar o devolver, con etiqueta de retorno incluida.</dd></div>
-      <div><dt class="lab">Pago</dt><dd id="svc-pay">Bizum, tarjeta y PayPal. Cobro seguro, sin guardar tus datos.</dd></div>
+  <section class="service">
+    <dl class="shell service-grid">
+      <div><dt class="lab">Envío</dt><dd id="svc-ship"></dd></div>
+      <div><dt class="lab">Devoluciones</dt><dd id="svc-ret"></dd></div>
+      <div><dt class="lab">Pago</dt><dd id="svc-pay"></dd></div>
     </dl>
   </section>
 
@@ -672,7 +605,7 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
       <span class="lab eyebrow">Atención personal</span>
       <h2 class="serif">¿Dudas con la talla? Escríbenos</h2>
       <p>Te contamos por WhatsApp las medidas reales de la prenda antes de que compres. Una persona, no un robot.</p>
-      <a class="btn" href="#">Abrir WhatsApp</a>
+      <button class="btn" type="button" id="wa-btn">Abrir WhatsApp</button>
       <p class="hours">Lunes a sábado, de 10:00 a 20:00 (hora de Canarias)</p>
     </div>
   </section>
@@ -689,10 +622,10 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
       <div class="fcol">
         <span class="lab">Tienda</span>
         <ul>
-          <li><a href="#novedades">Novedades</a></li>
-          <li><a href="#vestidos">Vestidos</a></li>
-          <li><a href="#punto">Punto</a></li>
-          <li><a href="#abrigos">Abrigos</a></li>
+          <li><a href="#catalogo">Catálogo</a></li>
+          <li><a href="#catalogo" data-go="Vestidos">Vestidos</a></li>
+          <li><a href="#catalogo" data-go="Punto">Punto</a></li>
+          <li><a href="#catalogo" data-go="Abrigos">Abrigos</a></li>
         </ul>
       </div>
       <div class="fcol">
@@ -715,140 +648,861 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
       </div>
     </div>
     <div class="legal">
-      <span class="lab" id="legal-market">Enviando a España · EUR €</span>
+      <span class="lab" id="legal-market"></span>
       <span class="lab">Maresía · Las Palmas de Gran Canaria</span>
     </div>
   </div>
 </footer>
 
-<div class="mock">
+<div class="demo-note">
   <div class="shell">
-    <span class="lab">Maqueta de diseño</span>
-    <p>Propuesta visual para Emilio, no una tienda en funcionamiento. «Maresía» es un nombre provisional y los precios son de ejemplo. Prueba el selector <strong>España € / México $</strong> de la cabecera: así funcionarían los dos mercados sobre una única tienda, con el pago contra entrega activado en México. Fotografías de muestra de <a href="https://unsplash.com">Unsplash</a> y <a href="https://www.pexels.com">Pexels</a>; en la tienda real se usan las imágenes del proveedor. — Alex</p>
+    <span class="lab">Demo funcional</span>
+    <p>Demo para Emilio. El catálogo, los filtros, la ficha de producto, la cesta y los totales <strong>funcionan de verdad</strong>; lo único simulado es el cobro, porque eso lo hace Shopify. Prueba el selector <strong>España € / México $</strong>: cambian la moneda, los precios, los portes y el método de pago, con contra entrega en México. «Maresía» es un nombre provisional y las fotos son de muestra, de <a href="https://unsplash.com">Unsplash</a> y <a href="https://www.pexels.com">Pexels</a>. — Alex</p>
   </div>
 </div>
 
-<a class="float" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.9-.9L3 20.5l1.6-4.4a8.3 8.3 0 0 1-1.1-4.1 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 9 7.9z"/></svg><span>WhatsApp</span></a>
+<button class="float" type="button" id="wa-float">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.9-.9L3 20.5l1.6-4.4a8.3 8.3 0 0 1-1.1-4.1 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 9 7.9z"/></svg>
+  <span>WhatsApp</span>
+</button>
+
+<div class="scrim" id="scrim" data-open="false"></div>
+
+<!-- cesta -->
+<aside class="drawer" id="cart" data-open="false" role="dialog" aria-modal="true" aria-label="Cesta" aria-hidden="true">
+  <div class="drawer-head">
+    <h2 class="serif" style="font-size:var(--step-1)">Tu cesta</h2>
+    <button class="x" type="button" id="close-cart" aria-label="Cerrar cesta">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+  </div>
+  <div class="drawer-body" id="cart-body"></div>
+  <div class="drawer-foot" id="cart-foot"></div>
+</aside>
+
+<!-- ficha -->
+<div class="sheet" id="sheet" data-open="false" role="dialog" aria-modal="true" aria-label="Detalle de producto" aria-hidden="true">
+  <div class="pic">
+    <button class="x" type="button" id="close-sheet" aria-label="Cerrar ficha">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
+    </button>
+    <img id="sheet-img" src="" alt="">
+  </div>
+  <div class="info" id="sheet-info"></div>
+</div>
+
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+
+<!-- la corriente del fondo -->
+<canvas id="flow" aria-hidden="true"></canvas>
 
 <script>
 (function () {
   "use strict";
 
-  var ES = {
-    marquee: ["Envío en 48-72 h en península", "Canarias 3-5 días", "Devoluciones gratuitas 14 días"],
-    ship: "48-72 h en península. Canarias en 3-5 días, con el IGIC calculado en el pedido.",
-    ret: "14 días para cambiar o devolver, con etiqueta de retorno incluida.",
-    pay: "Bizum, tarjeta y PayPal. Cobro seguro, sin guardar tus datos.",
-    legal: "Enviando a España · EUR €",
-    key: "eur"
-  };
-  var MX = {
-    marquee: ["Envío en 2-4 días en CDMX, Monterrey y Guadalajara", "Pago contra entrega en efectivo", "Devoluciones 14 días con recogida"],
-    ship: "2-4 días en las grandes ciudades, 5-7 días en el resto del país.",
-    ret: "14 días para cambiar o devolver. Recogida a domicilio en zona urbana.",
-    pay: "Pago contra entrega en efectivo. También tarjeta y PayPal.",
-    legal: "Enviando a México · MXN $",
-    key: "mxn"
+  /* ═══════════════════════════════════════════════════════
+     CATÁLOGO
+     Precio en las dos monedas por separado, no convertido al
+     vuelo: en una tienda real cada mercado tiene su redondeo.
+     ═══════════════════════════════════════════════════════ */
+  var PRODUCTS = [
+    { id:"vst-01", name:"Vestido largo satinado", cat:"Vestidos", eur:59.95, mxn:1319, was:null,
+      img:"https://images.pexels.com/photos/19389008/pexels-photo-19389008.jpeg?auto=compress&cs=tinysrgb&w=",
+      alt:"Vestido largo fluido en tono naranja sobre escalones de piedra",
+      stock:{S:4,M:2,L:6,XL:0},
+      desc:"Satén de caída fluida con escote cruzado y manga larga. Cae sin marcar y aguanta bien el día entero.",
+      tela:"68 % viscosa, 32 % poliéster", med:"Largo 132 cm en talla M", cuida:"Lavado a 30 °C" },
+
+    { id:"vst-02", name:"Vestido midi de cuadros", cat:"Vestidos", eur:49.95, mxn:1099, was:null,
+      img:"https://images.pexels.com/photos/36503930/pexels-photo-36503930.jpeg?auto=compress&cs=tinysrgb&w=",
+      alt:"Mujer con vestido de cuadros rojo sosteniendo hojas de otoño",
+      stock:{S:3,M:5,L:3,XL:2},
+      desc:"Cuadro clásico en tejido con cuerpo, falda midi con vuelo y cinturón del mismo tejido.",
+      tela:"75 % algodón, 25 % poliamida", med:"Largo 108 cm en talla M", cuida:"Lavado a 30 °C" },
+
+    { id:"vst-03", name:"Vestido negro de manga larga", cat:"Vestidos", eur:54.95, mxn:1209, was:null,
+      img:"https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=",
+      alt:"Mujer con vestido negro de manga larga entre árboles en otoño",
+      stock:{S:1,M:4,L:4,XL:3},
+      desc:"El vestido que resuelve cualquier plan. Punto fino elástico, cuello redondo y largo por debajo de la rodilla.",
+      tela:"92 % viscosa, 8 % elastano", med:"Largo 118 cm en talla M", cuida:"Lavado a mano" },
+
+    { id:"abr-01", name:"Blazer oversize de lana", cat:"Abrigos", eur:79.95, mxn:1749, was:null,
+      img:"https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&q=80&w=",
+      alt:"Mujer con blazer blanco de corte amplio",
+      stock:{S:2,M:3,L:5,XL:2},
+      desc:"Hombro caído y solapa ancha. Pensado para llevar encima de punto grueso sin que tire.",
+      tela:"54 % lana, 46 % poliéster", med:"Largo 76 cm en talla M", cuida:"Limpieza en seco" },
+
+    { id:"abr-02", name:"Gabardina cruzada", cat:"Abrigos", eur:94.95, mxn:2089, was:null,
+      img:"https://images.pexels.com/photos/6209914/pexels-photo-6209914.jpeg?auto=compress&cs=tinysrgb&w=",
+      alt:"Mujer con abrigo y sombrero caminando por un sendero cubierto de hojas",
+      stock:{S:2,M:2,L:1,XL:0},
+      desc:"Corte cruzado con cinturón, canesú doble y vuelo en el bajo. Repele el agua ligera.",
+      tela:"100 % algodón encerado", med:"Largo 112 cm en talla M", cuida:"Limpieza en seco" },
+
+    { id:"abr-03", name:"Abrigo de paño con bufanda", cat:"Abrigos", eur:109.95, mxn:2419, was:129.95,
+      img:"https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=",
+      alt:"Mujer paseando por un parque en otoño con abrigo y bufanda",
+      stock:{S:0,M:2,L:3,XL:1},
+      desc:"Paño de lana con forro completo y bufanda a juego incluida. La pieza más cálida de la temporada.",
+      tela:"70 % lana, 30 % poliéster", med:"Largo 104 cm en talla M", cuida:"Limpieza en seco" },
+
+    { id:"pnt-01", name:"Jersey de punto trenzado", cat:"Punto", eur:39.95, mxn:879, was:54.95,
+      img:"https://images.unsplash.com/photo-1587999882859-34b3f313df77?auto=format&fit=crop&q=80&w=",
+      alt:"Mujer con jersey de punto color crema sentada en un campo",
+      stock:{S:0,M:3,L:2,XL:0},
+      desc:"Trenza clásica en hilo grueso, cuello redondo y puños elásticos. No pica.",
+      tela:"50 % algodón, 50 % acrílico", med:"Largo 62 cm en talla M", cuida:"Lavado a 30 °C" },
+
+    { id:"pnt-02", name:"Jersey de cuello alto", cat:"Punto", eur:44.95, mxn:989, was:null,
+      img:"https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&q=80&w=",
+      alt:"Mujer con jersey de punto blanco de cuello alto",
+      stock:{S:5,M:6,L:4,XL:2},
+      desc:"Cuello alto doblado y punto compacto que no se da. El básico que se repite todo el invierno.",
+      tela:"80 % viscosa, 20 % poliamida", med:"Largo 58 cm en talla M", cuida:"Lavado a 30 °C" },
+
+    { id:"pnt-03", name:"Jersey de lana gris", cat:"Punto", eur:42.95, mxn:945, was:null,
+      img:"https://images.unsplash.com/photo-1574201635302-388dd92a4c3f?auto=format&fit=crop&q=80&w=",
+      alt:"Persona con jersey de punto gris",
+      stock:{S:3,M:4,L:3,XL:4},
+      desc:"Gris jaspeado en punto medio, hombro ligeramente caído y bajo recto.",
+      tela:"60 % lana merino, 40 % acrílico", med:"Largo 60 cm en talla M", cuida:"Lavado a mano" },
+
+    { id:"pnt-04", name:"Conjunto de punto y vaquero", cat:"Punto", eur:64.95, mxn:1429, was:null,
+      img:"https://images.pexels.com/photos/5352628/pexels-photo-5352628.jpeg?auto=compress&cs=tinysrgb&w=",
+      alt:"Jersey de punto con bolso amarillo y pantalón vaquero",
+      stock:{S:2,M:2,L:2,XL:1},
+      desc:"Jersey de punto suave y vaquero de tiro alto. Se vende junto y sale mejor que por separado.",
+      tela:"Punto: 100 % algodón · Vaquero: 98 % algodón, 2 % elastano", med:"Tiro 28 cm en talla M", cuida:"Lavado a 30 °C" },
+
+    { id:"fld-01", name:"Falda midi de tiro alto", cat:"Faldas", eur:35.95, mxn:789, was:null,
+      img:"https://images.pexels.com/photos/6138908/pexels-photo-6138908.jpeg?auto=compress&cs=tinysrgb&w=",
+      alt:"Mujer con falda negra y gafas de sol en una calle de ciudad",
+      stock:{S:4,M:3,L:2,XL:2},
+      desc:"Tiro alto con cintura forrada y abertura trasera. Entra bien con botas y con zapatilla.",
+      tela:"63 % poliéster, 33 % viscosa, 4 % elastano", med:"Largo 78 cm en talla M", cuida:"Lavado a 30 °C" },
+
+    { id:"cms-01", name:"Camisa de popelín", cat:"Camisas", eur:32.95, mxn:725, was:null,
+      img:"https://images.unsplash.com/photo-1574015974293-817f0ebebb74?auto=format&fit=crop&q=80&w=",
+      alt:"Mujer con camisa de manga larga",
+      stock:{S:6,M:5,L:4,XL:3},
+      desc:"Popelín de algodón con caída, cuello clásico y puño con botón. Plancha fácil.",
+      tela:"100 % algodón", med:"Largo 68 cm en talla M", cuida:"Lavado a 40 °C" }
+  ];
+
+  var MARKETS = {
+    es: {
+      key:"eur", locale:"es-ES", currency:"EUR",
+      marquee:["Envío en 48-72 h en península","Canarias 3-5 días","Devoluciones gratuitas 14 días"],
+      ship:"48-72 h en península. Canarias en 3-5 días, con el IGIC calculado en el pedido.",
+      ret:"14 días para cambiar o devolver, con etiqueta de retorno incluida.",
+      pay:"Bizum, tarjeta y PayPal. Cobro seguro, sin guardar tus datos.",
+      legal:"Enviando a España · EUR €",
+      freeFrom:60, flat:4.95, payLabel:"Bizum, tarjeta o PayPal", days:[2,4]
+    },
+    mx: {
+      key:"mxn", locale:"es-MX", currency:"MXN",
+      marquee:["Envío en 2-4 días en CDMX, Monterrey y Guadalajara","Pago contra entrega en efectivo","Devoluciones 14 días con recogida"],
+      ship:"2-4 días en las grandes ciudades, 5-7 días en el resto del país.",
+      ret:"14 días para cambiar o devolver. Recogida a domicilio en zona urbana.",
+      pay:"Pago contra entrega en efectivo. También tarjeta y PayPal.",
+      legal:"Enviando a México · MXN $",
+      freeFrom:999, flat:99, payLabel:"Contra entrega en efectivo", days:[2,7]
+    }
   };
 
-  var esBtn = document.getElementById("btn-es");
-  var mxBtn = document.getElementById("btn-mx");
-  var prices = document.querySelectorAll(".price span");
+  var SIZES = ["S","M","L","XL"];
+  var CATS = ["Todo","Vestidos","Punto","Abrigos","Faldas","Camisas"];
+  var STORE_KEY = "maresia-demo-cart";
 
-  function setText(id, value) {
-    var el = document.getElementById(id);
-    if (el) el.textContent = value;
+  var state = { market:"es", cat:"Todo", sort:"new", q:"", cart:[], pick:null, open:null };
+
+  /* ── utilidades ────────────────────────────────────────── */
+  var $ = function (id) { return document.getElementById(id); };
+  var mk = function () { return MARKETS[state.market]; };
+  var img = function (p, w) { return p.img + w; };
+
+  function money(n) {
+    var m = mk();
+    try {
+      return new Intl.NumberFormat(m.locale, {
+        style:"currency", currency:m.currency, minimumFractionDigits: m.key === "mxn" ? 0 : 2
+      }).format(n);
+    } catch (e) {
+      return n + (m.key === "mxn" ? " $" : " €");
+    }
+  }
+  function priceOf(p) { return mk().key === "mxn" ? p.mxn : p.eur; }
+  function wasOf(p) {
+    if (!p.was) return null;
+    return mk().key === "mxn" ? Math.round(p.was * (p.mxn / p.eur)) : p.was;
+  }
+  function byId(id) {
+    for (var i = 0; i < PRODUCTS.length; i++) if (PRODUCTS[i].id === id) return PRODUCTS[i];
+    return null;
+  }
+  function totalStock(p) {
+    var t = 0;
+    for (var s = 0; s < SIZES.length; s++) t += p.stock[SIZES[s]] || 0;
+    return t;
   }
 
-  var tks = document.querySelectorAll(".tk");
-
-  function apply(m, isEs) {
-    for (var t = 0; t < tks.length; t++) {
-      tks[t].textContent = m.marquee[t % m.marquee.length];
-    }
-    setText("svc-ship", m.ship);
-    setText("svc-ret", m.ret);
-    setText("svc-pay", m.pay);
-    setText("legal-market", m.legal);
-    for (var i = 0; i < prices.length; i++) {
-      var v = prices[i].getAttribute("data-" + m.key);
-      if (v) prices[i].textContent = v;
-    }
-    esBtn.setAttribute("aria-pressed", isEs ? "true" : "false");
-    mxBtn.setAttribute("aria-pressed", isEs ? "false" : "true");
+  /* ── guardado local, siempre blindado ──────────────────── */
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state.cart)); } catch (e) {}
+  }
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORE_KEY);
+      if (!raw) return;
+      var arr = JSON.parse(raw);
+      if (Object.prototype.toString.call(arr) === "[object Array]") {
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] && byId(arr[i].id) && arr[i].size && arr[i].qty > 0) state.cart.push(arr[i]);
+        }
+      }
+    } catch (e) {}
   }
 
-  esBtn.addEventListener("click", function () { apply(ES, true); });
-  mxBtn.addEventListener("click", function () { apply(MX, false); });
+  /* ── avisos ────────────────────────────────────────────── */
+  function toast(msg) {
+    var box = $("toasts");
+    var t = document.createElement("div");
+    t.className = "toast";
+    t.textContent = msg;
+    box.appendChild(t);
+    window.setTimeout(function () {
+      t.setAttribute("data-out", "true");
+      window.setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 400);
+    }, 2600);
+  }
 
-  // selección de talla
-  var groups = document.querySelectorAll(".sizes");
-  for (var g = 0; g < groups.length; g++) {
-    groups[g].addEventListener("click", function (e) {
-      var b = e.target.closest("button");
-      if (!b || b.disabled) return;
-      var sibs = this.querySelectorAll("button");
-      for (var s = 0; s < sibs.length; s++) sibs[s].setAttribute("aria-pressed", "false");
-      b.setAttribute("aria-pressed", "true");
+  /* ═══════════════════════════════════════════════════════
+     NAVEGACIÓN Y FILTROS
+     ═══════════════════════════════════════════════════════ */
+  function buildNav() {
+    var desk = $("nav-desk"), mob = $("nav-mob"), chips = $("chips");
+    desk.innerHTML = ""; mob.innerHTML = ""; chips.innerHTML = "";
+    for (var i = 0; i < CATS.length; i++) {
+      var c = CATS[i];
+      if (i > 0 && i < 5) {
+        desk.appendChild(navBtn(c, "nav"));
+        mob.appendChild(navBtn(c, "nav"));
+      }
+      chips.appendChild(navBtn(c, "chip"));
+    }
+  }
+  function navBtn(cat, kind) {
+    var b = document.createElement("button");
+    b.type = "button";
+    b.textContent = cat;
+    b.setAttribute("data-go", cat);
+    if (kind === "chip") b.setAttribute("aria-pressed", String(cat === state.cat));
+    else b.setAttribute("aria-current", String(cat === state.cat));
+    return b;
+  }
+  function syncNav() {
+    var all = document.querySelectorAll("[data-go]");
+    for (var i = 0; i < all.length; i++) {
+      var c = all[i].getAttribute("data-go");
+      if (all[i].hasAttribute("aria-pressed")) all[i].setAttribute("aria-pressed", String(c === state.cat));
+      if (all[i].hasAttribute("aria-current")) all[i].setAttribute("aria-current", String(c === state.cat));
+    }
+  }
+
+  function visible() {
+    var out = [];
+    var needle = state.q.trim().toLowerCase();
+    for (var i = 0; i < PRODUCTS.length; i++) {
+      var p = PRODUCTS[i];
+      if (state.cat !== "Todo" && p.cat !== state.cat) continue;
+      if (needle && (p.name + " " + p.cat + " " + p.desc).toLowerCase().indexOf(needle) < 0) continue;
+      out.push(p);
+    }
+    if (state.sort === "asc") out.sort(function (a, b) { return priceOf(a) - priceOf(b); });
+    if (state.sort === "desc") out.sort(function (a, b) { return priceOf(b) - priceOf(a); });
+    return out;
+  }
+
+  /* ── rejilla ───────────────────────────────────────────── */
+  function renderGrid() {
+    var list = visible();
+    var grid = $("grid");
+    grid.innerHTML = "";
+
+    $("result-count").textContent = list.length === 1 ? "1 prenda" : list.length + " prendas";
+
+    if (!list.length) {
+      var e = document.createElement("p");
+      e.className = "empty";
+      e.textContent = "No hay prendas que coincidan. Prueba con otra categoría o borra la búsqueda.";
+      grid.appendChild(e);
+      return;
+    }
+
+    for (var i = 0; i < list.length; i++) {
+      var p = list[i];
+      var out = totalStock(p) === 0;
+      var low = !out && totalStock(p) <= 3;
+
+      var card = document.createElement("article");
+      card.className = "card";
+
+      var frame = document.createElement("button");
+      frame.type = "button";
+      frame.className = "frame";
+      frame.setAttribute("data-open-id", p.id);
+      frame.setAttribute("aria-label", "Ver " + p.name);
+
+      var im = document.createElement("img");
+      im.src = img(p, "900");
+      im.srcset = img(p, "600") + " 600w, " + img(p, "900") + " 900w";
+      im.sizes = "(max-width:420px) 92vw, (max-width:780px) 46vw, (max-width:1040px) 31vw, 23vw";
+      im.alt = p.alt;
+      im.loading = "lazy";
+      im.width = 900; im.height = 1200;
+      frame.appendChild(im);
+
+      if (out || low || p.was) {
+        var fl = document.createElement("span");
+        fl.className = "lab flag" + (out ? " out" : (p.was ? "" : " soft"));
+        fl.textContent = out ? "Agotado" : (p.was ? "Rebajado" : "Últimas unidades");
+        frame.appendChild(fl);
+      }
+
+      if (!out) {
+        var q = document.createElement("span");
+        q.className = "quick";
+        q.textContent = "Elegir talla";
+        frame.appendChild(q);
+      }
+      card.appendChild(frame);
+
+      var h = document.createElement("h3");
+      h.textContent = p.name;
+      card.appendChild(h);
+
+      var pr = document.createElement("div");
+      pr.className = "price num";
+      var now = document.createElement("span");
+      now.textContent = money(priceOf(p));
+      pr.appendChild(now);
+      var w = wasOf(p);
+      if (w) {
+        var old = document.createElement("span");
+        old.className = "was";
+        old.textContent = money(w);
+        pr.appendChild(old);
+      }
+      card.appendChild(pr);
+
+      var meta = document.createElement("div");
+      meta.className = "meta";
+      meta.textContent = out ? "Sin tallas disponibles" : p.cat + " · tallas " + availSizes(p).join(" ");
+      card.appendChild(meta);
+
+      grid.appendChild(card);
+    }
+  }
+  function availSizes(p) {
+    var a = [];
+    for (var i = 0; i < SIZES.length; i++) if (p.stock[SIZES[i]] > 0) a.push(SIZES[i]);
+    return a;
+  }
+
+  /* ── contadores de colección ───────────────────────────── */
+  function renderCounts() {
+    var nodes = document.querySelectorAll("[data-count]");
+    for (var i = 0; i < nodes.length; i++) {
+      var cat = nodes[i].getAttribute("data-count"), n = 0;
+      for (var j = 0; j < PRODUCTS.length; j++) if (PRODUCTS[j].cat === cat) n++;
+      nodes[i].textContent = n === 1 ? "1 pieza" : n + " piezas";
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     FICHA DE PRODUCTO
+     ═══════════════════════════════════════════════════════ */
+  function openSheet(id) {
+    var p = byId(id);
+    if (!p) return;
+    state.pick = { id:id, size:null };
+
+    $("sheet-img").src = img(p, "1000");
+    $("sheet-img").alt = p.alt;
+
+    var info = $("sheet-info");
+    info.innerHTML = "";
+
+    var eyebrow = document.createElement("span");
+    eyebrow.className = "lab";
+    eyebrow.style.color = "var(--sea)";
+    eyebrow.textContent = p.cat;
+    info.appendChild(eyebrow);
+
+    var h = document.createElement("h3");
+    h.className = "serif";
+    h.textContent = p.name;
+    info.appendChild(h);
+
+    var pr = document.createElement("div");
+    pr.className = "price num";
+    pr.style.fontSize = "var(--step-1)";
+    var now = document.createElement("span");
+    now.textContent = money(priceOf(p));
+    pr.appendChild(now);
+    var w = wasOf(p);
+    if (w) {
+      var old = document.createElement("span");
+      old.className = "was";
+      old.textContent = money(w);
+      pr.appendChild(old);
+    }
+    info.appendChild(pr);
+
+    var d = document.createElement("p");
+    d.className = "desc";
+    d.textContent = p.desc;
+    info.appendChild(d);
+
+    var szLab = document.createElement("span");
+    szLab.className = "lab";
+    szLab.textContent = "Talla";
+    info.appendChild(szLab);
+
+    var sz = document.createElement("div");
+    sz.className = "sizes";
+    for (var i = 0; i < SIZES.length; i++) {
+      (function (s) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.textContent = s;
+        b.setAttribute("aria-pressed", "false");
+        if (!p.stock[s]) {
+          b.disabled = true;
+          b.title = "Sin stock";
+        } else {
+          b.addEventListener("click", function () {
+            state.pick.size = s;
+            var sibs = sz.querySelectorAll("button");
+            for (var k = 0; k < sibs.length; k++) sibs[k].setAttribute("aria-pressed", "false");
+            b.setAttribute("aria-pressed", "true");
+            note.textContent = p.stock[s] <= 2
+              ? "Quedan " + p.stock[s] + " unidades de la talla " + s
+              : "Disponible en talla " + s;
+            addBtn.disabled = false;
+          });
+        }
+        sz.appendChild(b);
+      })(SIZES[i]);
+    }
+    info.appendChild(sz);
+
+    var note = document.createElement("p");
+    note.className = "size-note";
+    note.style.margin = "0";
+    note.textContent = totalStock(p) ? "Elige una talla para continuar." : "Esta prenda está agotada.";
+    info.appendChild(note);
+
+    var addBtn = document.createElement("button");
+    addBtn.type = "button";
+    addBtn.className = "btn btn-dark btn-block";
+    addBtn.textContent = "Añadir a la cesta";
+    addBtn.disabled = true;
+    addBtn.addEventListener("click", function () {
+      if (!state.pick.size) return;
+      addToCart(p.id, state.pick.size);
+      closeSheet();
+      openCart();
     });
+    info.appendChild(addBtn);
+
+    var spec = document.createElement("div");
+    spec.className = "spec";
+    spec.appendChild(specRow("Composición", p.tela));
+    spec.appendChild(specRow("Medidas", p.med));
+    spec.appendChild(specRow("Cuidado", p.cuida));
+    spec.appendChild(specRow("Envío", mk().ship.split(".")[0]));
+    info.appendChild(spec);
+
+    show("sheet");
+  }
+  function specRow(k, v) {
+    var r = document.createElement("div");
+    var a = document.createElement("span"); a.textContent = k;
+    var b = document.createElement("span"); b.textContent = v; b.style.textAlign = "right";
+    r.appendChild(a); r.appendChild(b);
+    return r;
+  }
+  function closeSheet() { hide("sheet"); }
+
+  /* ═══════════════════════════════════════════════════════
+     CESTA
+     ═══════════════════════════════════════════════════════ */
+  function addToCart(id, size) {
+    var p = byId(id);
+    var max = p.stock[size] || 0;
+    for (var i = 0; i < state.cart.length; i++) {
+      if (state.cart[i].id === id && state.cart[i].size === size) {
+        if (state.cart[i].qty >= max) {
+          toast("Solo quedan " + max + " unidades de la talla " + size);
+          return;
+        }
+        state.cart[i].qty++;
+        after("Añadido: " + p.name + " · talla " + size);
+        return;
+      }
+    }
+    state.cart.push({ id:id, size:size, qty:1 });
+    after("Añadido: " + p.name + " · talla " + size);
+  }
+  function after(msg) {
+    save(); renderCart(); bump(); if (msg) toast(msg);
+  }
+  function changeQty(idx, delta) {
+    var it = state.cart[idx];
+    if (!it) return;
+    var p = byId(it.id);
+    var max = p.stock[it.size] || 0;
+    var next = it.qty + delta;
+    if (next < 1) { state.cart.splice(idx, 1); after("Prenda quitada de la cesta"); return; }
+    if (next > max) { toast("Solo quedan " + max + " unidades de la talla " + it.size); return; }
+    it.qty = next;
+    after(null);
+  }
+  function units() {
+    var n = 0;
+    for (var i = 0; i < state.cart.length; i++) n += state.cart[i].qty;
+    return n;
+  }
+  function subtotal() {
+    var s = 0;
+    for (var i = 0; i < state.cart.length; i++) {
+      var p = byId(state.cart[i].id);
+      if (p) s += priceOf(p) * state.cart[i].qty;
+    }
+    return s;
+  }
+  function shipping(sub) {
+    var m = mk();
+    if (!state.cart.length) return 0;
+    return sub >= m.freeFrom ? 0 : m.flat;
+  }
+  function bump() {
+    var c = $("cart-count");
+    c.textContent = units();
+    c.setAttribute("data-bump", "true");
+    window.setTimeout(function () { c.setAttribute("data-bump", "false"); }, 320);
   }
 
-  // menú móvil
-  var burger = document.getElementById("burger");
-  var navMob = document.getElementById("nav-mob");
-  burger.addEventListener("click", function () {
-    var open = navMob.getAttribute("data-open") === "true";
-    navMob.setAttribute("data-open", open ? "false" : "true");
-    burger.setAttribute("aria-expanded", open ? "false" : "true");
-    burger.setAttribute("aria-label", open ? "Abrir menú" : "Cerrar menú");
-  });
-  navMob.addEventListener("click", function (e) {
-    if (e.target.tagName === "A") {
-      navMob.setAttribute("data-open", "false");
-      burger.setAttribute("aria-expanded", "false");
-      burger.setAttribute("aria-label", "Abrir menú");
-    }
-  });
+  function renderCart() {
+    var body = $("cart-body"), foot = $("cart-foot");
+    body.innerHTML = ""; foot.innerHTML = "";
+    $("cart-count").textContent = units();
 
-  // ── ¿el visitante quiere menos movimiento? ──────────────
+    if (!state.cart.length) {
+      var e = document.createElement("div");
+      e.className = "empty-cart";
+      var t = document.createElement("p");
+      t.style.margin = "0 0 1.2rem";
+      t.textContent = "Tu cesta está vacía.";
+      e.appendChild(t);
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "btn btn-dark";
+      b.textContent = "Ver el catálogo";
+      b.addEventListener("click", function () { closeAll(); go("Todo"); });
+      e.appendChild(b);
+      body.appendChild(e);
+      return;
+    }
+
+    for (var i = 0; i < state.cart.length; i++) {
+      (function (idx) {
+        var it = state.cart[idx];
+        var p = byId(it.id);
+
+        var row = document.createElement("div");
+        row.className = "line-item";
+
+        var fr = document.createElement("div");
+        fr.className = "frame";
+        var im = document.createElement("img");
+        im.src = img(p, "200"); im.alt = p.alt; im.loading = "lazy";
+        fr.appendChild(im);
+        row.appendChild(fr);
+
+        var col = document.createElement("div");
+
+        var top = document.createElement("div");
+        top.className = "li-top";
+        var nm = document.createElement("div");
+        var h4 = document.createElement("h4"); h4.textContent = p.name;
+        var sv = document.createElement("span"); sv.className = "sz"; sv.textContent = "Talla " + it.size;
+        nm.appendChild(h4); nm.appendChild(sv);
+        var amount = document.createElement("span");
+        amount.className = "num";
+        amount.style.fontSize = "var(--step--1)";
+        amount.textContent = money(priceOf(p) * it.qty);
+        top.appendChild(nm); top.appendChild(amount);
+        col.appendChild(top);
+
+        var qty = document.createElement("div");
+        qty.className = "qty";
+        var minus = document.createElement("button");
+        minus.type = "button"; minus.textContent = "−";
+        minus.setAttribute("aria-label", "Quitar una unidad de " + p.name);
+        minus.addEventListener("click", function () { changeQty(idx, -1); });
+        var count = document.createElement("span");
+        count.className = "num"; count.textContent = it.qty;
+        var plus = document.createElement("button");
+        plus.type = "button"; plus.textContent = "+";
+        plus.setAttribute("aria-label", "Añadir una unidad de " + p.name);
+        plus.addEventListener("click", function () { changeQty(idx, 1); });
+        qty.appendChild(minus); qty.appendChild(count); qty.appendChild(plus);
+
+        var bot = document.createElement("div");
+        bot.className = "li-bot";
+        bot.appendChild(qty);
+        var drop = document.createElement("button");
+        drop.type = "button"; drop.className = "drop"; drop.textContent = "Quitar";
+        drop.addEventListener("click", function () {
+          state.cart.splice(idx, 1);
+          after("Prenda quitada de la cesta");
+        });
+        bot.appendChild(drop);
+        col.appendChild(bot);
+
+        row.appendChild(col);
+        body.appendChild(row);
+      })(i);
+    }
+
+    var sub = subtotal(), ship = shipping(sub), m = mk();
+
+    var tot = document.createElement("div");
+    tot.className = "totals num";
+    tot.appendChild(totRow("Subtotal", money(sub)));
+    tot.appendChild(totRow("Envío", ship === 0 ? "Gratis" : money(ship)));
+    var g = totRow("Total", money(sub + ship));
+    g.className = "grand";
+    tot.appendChild(g);
+    foot.appendChild(tot);
+
+    if (ship > 0) {
+      var hint = document.createElement("p");
+      hint.className = "ship-hint";
+      hint.style.margin = "0";
+      hint.textContent = "Te faltan " + money(m.freeFrom - sub) + " para el envío gratis.";
+      foot.appendChild(hint);
+    }
+
+    var pay = document.createElement("p");
+    pay.className = "lab";
+    pay.style.cssText = "margin:0;color:var(--dune)";
+    pay.textContent = m.payLabel;
+    foot.appendChild(pay);
+
+    var go2 = document.createElement("button");
+    go2.type = "button";
+    go2.className = "btn btn-dark btn-block";
+    go2.textContent = "Finalizar pedido";
+    go2.addEventListener("click", checkout);
+    foot.appendChild(go2);
+  }
+  function totRow(k, v) {
+    var r = document.createElement("div");
+    var a = document.createElement("span"); a.textContent = k;
+    var b = document.createElement("span"); b.textContent = v;
+    r.appendChild(a); r.appendChild(b);
+    return r;
+  }
+
+  /* ── cierre del pedido ─────────────────────────────────── */
+  function checkout() {
+    if (!state.cart.length) return;
+    var m = mk();
+    var sub = subtotal(), ship = shipping(sub);
+    var total = money(sub + ship);
+    var n = units();
+    var ref = "MAR-" + String(Math.floor(10000 + Math.random() * 89999));
+
+    var from = new Date(); from.setDate(from.getDate() + m.days[0]);
+    var to = new Date(); to.setDate(to.getDate() + m.days[1]);
+    var fmt = function (d) {
+      try { return d.toLocaleDateString(m.locale, { day:"numeric", month:"long" }); }
+      catch (e) { return d.getDate() + "/" + (d.getMonth() + 1); }
+    };
+
+    state.cart = [];
+    save();
+
+    var body = $("cart-body"), foot = $("cart-foot");
+    body.innerHTML = ""; foot.innerHTML = "";
+    $("cart-count").textContent = "0";
+
+    var done = document.createElement("div");
+    done.className = "done";
+
+    var mark = document.createElement("div");
+    mark.className = "mark";
+    mark.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg>';
+    done.appendChild(mark);
+
+    var h = document.createElement("h4");
+    h.className = "serif";
+    h.textContent = "Pedido confirmado";
+    done.appendChild(h);
+
+    var p1 = document.createElement("p");
+    p1.textContent = n + (n === 1 ? " prenda" : " prendas") + " por " + total + ", con " + m.payLabel.toLowerCase() + ".";
+    done.appendChild(p1);
+
+    var p2 = document.createElement("p");
+    p2.textContent = "Entrega estimada entre el " + fmt(from) + " y el " + fmt(to) + ".";
+    done.appendChild(p2);
+
+    var p3 = document.createElement("p");
+    p3.className = "ref";
+    p3.textContent = "Referencia " + ref;
+    done.appendChild(p3);
+
+    var p4 = document.createElement("p");
+    p4.style.cssText = "color:var(--dune);font-size:var(--step--2);margin-top:.6rem";
+    p4.textContent = "En la tienda real, aquí entra el cobro de Shopify y el pedido se envía solo al proveedor.";
+    done.appendChild(p4);
+
+    body.appendChild(done);
+
+    var again = document.createElement("button");
+    again.type = "button";
+    again.className = "btn btn-dark btn-block";
+    again.textContent = "Seguir comprando";
+    again.addEventListener("click", function () { closeAll(); renderCart(); });
+    foot.appendChild(again);
+
+    toast("Pedido " + ref + " registrado");
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     CAPAS
+     ═══════════════════════════════════════════════════════ */
+  var lastFocus = null;
+  function show(which) {
+    lastFocus = document.activeElement;
+    state.open = which;
+    $(which).setAttribute("data-open", "true");
+    $(which).setAttribute("aria-hidden", "false");
+    $("scrim").setAttribute("data-open", "true");
+    document.body.classList.add("locked");
+    var btn = which === "cart" ? $("close-cart") : $("close-sheet");
+    window.setTimeout(function () { if (btn) btn.focus(); }, 120);
+  }
+  function hide(which) {
+    state.open = null;
+    $(which).setAttribute("data-open", "false");
+    $(which).setAttribute("aria-hidden", "true");
+    $("scrim").setAttribute("data-open", "false");
+    document.body.classList.remove("locked");
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function closeAll() { if (state.open) hide(state.open); }
+  function openCart() { renderCart(); show("cart"); }
+
+  /* ═══════════════════════════════════════════════════════
+     MERCADO
+     ═══════════════════════════════════════════════════════ */
+  function applyMarket() {
+    var m = mk();
+    var tks = document.querySelectorAll(".tk");
+    for (var i = 0; i < tks.length; i++) tks[i].textContent = m.marquee[i % m.marquee.length];
+    $("svc-ship").textContent = m.ship;
+    $("svc-ret").textContent = m.ret;
+    $("svc-pay").textContent = m.pay;
+    $("legal-market").textContent = m.legal;
+    $("btn-es").setAttribute("aria-pressed", String(state.market === "es"));
+    $("btn-mx").setAttribute("aria-pressed", String(state.market === "mx"));
+    renderGrid();
+    renderCart();
+    if (state.open === "sheet" && state.pick) openSheet(state.pick.id);
+  }
+
+  function go(cat) {
+    state.cat = cat;
+    syncNav();
+    renderGrid();
+    var sec = $("catalogo");
+    if (sec) sec.scrollIntoView({ behavior: calm ? "auto" : "smooth", block:"start" });
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     EVENTOS
+     ═══════════════════════════════════════════════════════ */
   var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  // ── carrusel del hero ───────────────────────────────────
+  document.addEventListener("click", function (e) {
+    var g = e.target.closest ? e.target.closest("[data-go]") : null;
+    if (g) {
+      e.preventDefault();
+      go(g.getAttribute("data-go"));
+      var nm = $("nav-mob");
+      nm.setAttribute("data-open", "false");
+      $("burger").setAttribute("aria-expanded", "false");
+      return;
+    }
+    var o = e.target.closest ? e.target.closest("[data-open-id]") : null;
+    if (o) { openSheet(o.getAttribute("data-open-id")); return; }
+  });
+
+  $("open-cart").addEventListener("click", openCart);
+  $("close-cart").addEventListener("click", function () { hide("cart"); });
+  $("close-sheet").addEventListener("click", closeSheet);
+  $("scrim").addEventListener("click", closeAll);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && state.open) closeAll();
+  });
+
+  $("btn-es").addEventListener("click", function () { state.market = "es"; applyMarket(); toast("Mercado: España · EUR"); });
+  $("btn-mx").addEventListener("click", function () { state.market = "mx"; applyMarket(); toast("Mercado: México · MXN, contra entrega"); });
+
+  $("q").addEventListener("input", function () { state.q = this.value; renderGrid(); });
+  $("sort").addEventListener("change", function () { state.sort = this.value; renderGrid(); });
+
+  $("burger").addEventListener("click", function () {
+    var nm = $("nav-mob");
+    var open = nm.getAttribute("data-open") === "true";
+    nm.setAttribute("data-open", open ? "false" : "true");
+    this.setAttribute("aria-expanded", open ? "false" : "true");
+    this.setAttribute("aria-label", open ? "Abrir menú" : "Cerrar menú");
+  });
+
+  function waMsg() { toast("En la tienda real esto abre WhatsApp con tu pareja al otro lado"); }
+  $("wa-btn").addEventListener("click", waMsg);
+  $("wa-float").addEventListener("click", waMsg);
+
+  /* ═══════════════════════════════════════════════════════
+     CARRUSEL
+     ═══════════════════════════════════════════════════════ */
   var slides = document.querySelectorAll(".slide");
   var dots = document.querySelectorAll(".dots button");
-  var current = 0;
-  var timer = null;
-  var HOLD = 6400;
+  var current = 0, timer = null, HOLD = 6400;
 
-  function show(n) {
+  function showSlide(n) {
     current = (n + slides.length) % slides.length;
     for (var i = 0; i < slides.length; i++) {
       slides[i].setAttribute("data-active", i === current ? "true" : "false");
       if (dots[i]) {
-        // quitar y volver a poner para relanzar la barra de progreso
         dots[i].setAttribute("aria-current", "false");
-        if (i === current) {
-          void dots[i].offsetWidth;
-          dots[i].setAttribute("aria-current", "true");
-        }
+        if (i === current) { void dots[i].offsetWidth; dots[i].setAttribute("aria-current", "true"); }
       }
     }
   }
-
-  function play() {
-    if (calm || slides.length < 2 || timer) return;
-    timer = window.setInterval(function () { show(current + 1); }, HOLD);
-  }
-  function pause() {
-    if (timer) { window.clearInterval(timer); timer = null; }
-  }
-
+  function play() { if (calm || slides.length < 2 || timer) return; timer = window.setInterval(function () { showSlide(current + 1); }, HOLD); }
+  function pause() { if (timer) { window.clearInterval(timer); timer = null; } }
   for (var d = 0; d < dots.length; d++) {
-    (function (idx) {
-      dots[idx].addEventListener("click", function () { pause(); show(idx); play(); });
-    })(d);
+    (function (idx) { dots[idx].addEventListener("click", function () { pause(); showSlide(idx); play(); }); })(d);
   }
-
   var hero = document.querySelector(".hero");
   if (hero) {
     hero.addEventListener("mouseenter", pause);
@@ -856,54 +1510,675 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
     hero.addEventListener("focusin", pause);
     hero.addEventListener("focusout", play);
   }
-  document.addEventListener("visibilitychange", function () {
-    if (document.hidden) { pause(); } else { play(); }
-  });
+  document.addEventListener("visibilitychange", function () { if (document.hidden) pause(); else play(); });
   play();
 
-  // ── añadir rápido sobre cada foto de producto ───────────
-  var cards = document.querySelectorAll(".card .frame");
-  for (var c = 0; c < cards.length; c++) {
-    var q = document.createElement("button");
-    q.type = "button";
-    q.className = "quick";
-    q.textContent = "Añadir a la cesta";
-    cards[c].appendChild(q);
+  /* ═══════════════════════════════════════════════════════
+     APARICIÓN AL DESPLAZAR
+     Solo se esconde lo que ya está por debajo de la primera
+     pantalla: lo que se ve al cargar nunca se oculta.
+     ═══════════════════════════════════════════════════════ */
+  function reveal() {
+    if (calm || !("IntersectionObserver" in window)) return;
+    var targets = document.querySelectorAll(".sec-head, .coll, .tools, .ed-grid > .frame, .ed-copy, .service-grid > div, .wa .inner, .demo-note .shell");
+    var fold = window.innerHeight * 0.92, pending = [];
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i].classList.contains("rv-in")) continue;
+      if (targets[i].getBoundingClientRect().top > fold) {
+        targets[i].classList.add("rv");
+        pending.push(targets[i]);
+      }
+    }
+    if (!pending.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      for (var e = 0; e < entries.length; e++) {
+        if (!entries[e].isIntersecting) continue;
+        var el = entries[e].target;
+        var sibs = el.parentNode ? el.parentNode.children : [];
+        el.style.transitionDelay = Math.min(Array.prototype.indexOf.call(sibs, el), 5) * 80 + "ms";
+        el.classList.add("rv-in");
+        io.unobserve(el);
+      }
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    for (var p = 0; p < pending.length; p++) io.observe(pending[p]);
   }
 
-  // ── aparición al desplazar ──────────────────────────────
-  // Solo se esconde lo que ya está por debajo de la primera
-  // pantalla: lo que se ve al cargar nunca se oculta.
-  if (!calm && "IntersectionObserver" in window) {
-    var targets = document.querySelectorAll(
-      ".sec-head, .coll, .card, .ed-grid > .frame, .ed-copy, .service-grid > div, .wa .inner, .mock .shell"
-    );
-    var pending = [];
-    var fold = window.innerHeight * 0.92;
+  /* ═══════════════════════════════════════════════════════
+     SPLASH CURSOR
+     Simulación de fluidos en WebGL, como la de la referencia:
+     cada fotograma se resuelve un campo de velocidad en la GPU
+     — rotacional, vorticidad, divergencia, veinte iteraciones
+     de presión y advección — y se arrastra tinta por él. El
+     cursor inyecta fuerza y color; el clic, un estallido.
+     Parámetros de la referencia: rainbow y force 2.85.
+     ═══════════════════════════════════════════════════════ */
+  function splash() {
+    var cv = $("flow");
+    if (!cv) return;
+    if (calm) { cv.style.display = "none"; return; }
 
-    for (var t2 = 0; t2 < targets.length; t2++) {
-      if (targets[t2].getBoundingClientRect().top > fold) {
-        targets[t2].classList.add("rv");
-        pending.push(targets[t2]);
+    var config = {
+      SIM_RESOLUTION: 128,
+      DYE_RESOLUTION: 1024,
+      DENSITY_DISSIPATION: 3.5,
+      VELOCITY_DISSIPATION: 2,
+      PRESSURE: 0.1,
+      PRESSURE_ITERATIONS: 20,
+      CURL: 3,
+      SPLAT_RADIUS: 0.2,
+      SPLAT_FORCE: 6000,
+      FORCE: 2.85,
+      RAINBOW: true,
+      SHADING: true
+    };
+
+    /* ── contexto ───────────────────────────────────────── */
+    var params = { alpha: true, depth: false, stencil: false, antialias: false, preserveDrawingBuffer: false };
+    var gl = cv.getContext("webgl2", params);
+    var isWebGL2 = !!gl;
+    if (!isWebGL2) gl = cv.getContext("webgl", params) || cv.getContext("experimental-webgl", params);
+    if (!gl) { cv.style.display = "none"; return; }
+
+    var halfFloat = null, supportLinearFiltering = null;
+    if (isWebGL2) {
+      gl.getExtension("EXT_color_buffer_float");
+      supportLinearFiltering = gl.getExtension("OES_texture_float_linear");
+    } else {
+      halfFloat = gl.getExtension("OES_texture_half_float");
+      supportLinearFiltering = gl.getExtension("OES_texture_half_float_linear");
+    }
+    gl.clearColor(0, 0, 0, 0);
+
+    var texType = isWebGL2 ? gl.HALF_FLOAT : (halfFloat ? halfFloat.HALF_FLOAT_OES : null);
+    if (!texType) { cv.style.display = "none"; return; }
+
+    function canRender(internalFormat, format, type) {
+      var tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, 4, 4, 0, format, type, null);
+      var fbo = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+      var ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.deleteFramebuffer(fbo);
+      gl.deleteTexture(tex);
+      return ok;
+    }
+    function pickFormat(internalFormat, format, type) {
+      if (canRender(internalFormat, format, type)) return { internalFormat: internalFormat, format: format };
+      if (!isWebGL2) return null;
+      if (internalFormat === gl.R16F) return pickFormat(gl.RG16F, gl.RG, type);
+      if (internalFormat === gl.RG16F) return pickFormat(gl.RGBA16F, gl.RGBA, type);
+      return null;
+    }
+
+    var formatRGBA, formatRG, formatR;
+    if (isWebGL2) {
+      formatRGBA = pickFormat(gl.RGBA16F, gl.RGBA, texType);
+      formatRG = pickFormat(gl.RG16F, gl.RG, texType);
+      formatR = pickFormat(gl.R16F, gl.RED, texType);
+    } else {
+      formatRGBA = pickFormat(gl.RGBA, gl.RGBA, texType);
+      formatRG = formatRGBA;
+      formatR = formatRGBA;
+    }
+    if (!formatRGBA || !formatRG || !formatR) { cv.style.display = "none"; return; }
+
+    /* ── shaders ────────────────────────────────────────── */
+    /* Ojo: cada directiva del preprocesador tiene que ir sola
+       en su línea, de ahí los \n explícitos.                 */
+    var baseVertex =
+      "precision highp float;" +
+      "attribute vec2 aPosition;" +
+      "varying vec2 vUv, vL, vR, vT, vB;" +
+      "uniform vec2 texelSize;" +
+      "void main(){" +
+      "  vUv = aPosition * 0.5 + 0.5;" +
+      "  vL = vUv - vec2(texelSize.x, 0.0);" +
+      "  vR = vUv + vec2(texelSize.x, 0.0);" +
+      "  vT = vUv + vec2(0.0, texelSize.y);" +
+      "  vB = vUv - vec2(0.0, texelSize.y);" +
+      "  gl_Position = vec4(aPosition, 0.0, 1.0);" +
+      "}";
+
+    var clearShader =
+      "precision mediump float; precision mediump sampler2D;" +
+      "varying highp vec2 vUv; uniform sampler2D uTexture; uniform float value;" +
+      "void main(){ gl_FragColor = value * texture2D(uTexture, vUv); }";
+
+    var displayShader =
+      "precision highp float; precision highp sampler2D;" +
+      "varying vec2 vUv, vL, vR, vT, vB;" +
+      "uniform sampler2D uTexture; uniform vec2 texelSize;" +
+      "void main(){" +
+      "  vec3 c = texture2D(uTexture, vUv).rgb;" +
+      "\n#ifdef SHADING\n" +
+      "  vec3 lc = texture2D(uTexture, vL).rgb;" +
+      "  vec3 rc = texture2D(uTexture, vR).rgb;" +
+      "  vec3 tc = texture2D(uTexture, vT).rgb;" +
+      "  vec3 bc = texture2D(uTexture, vB).rgb;" +
+      "  float dx = length(rc) - length(lc);" +
+      "  float dy = length(tc) - length(bc);" +
+      "  vec3 n = normalize(vec3(dx, dy, length(texelSize)));" +
+      "  vec3 l = vec3(0.0, 0.0, 1.0);" +
+      "  float diffuse = clamp(dot(n, l) + 0.7, 0.7, 1.0);" +
+      "  c *= diffuse;" +
+      "\n#endif\n" +
+      "  float a = max(c.r, max(c.g, c.b));" +
+      "  gl_FragColor = vec4(c, a);" +
+      "}";
+
+    var splatShader =
+      "precision highp float; precision highp sampler2D;" +
+      "varying vec2 vUv;" +
+      "uniform sampler2D uTarget; uniform float aspectRatio;" +
+      "uniform vec3 color; uniform vec2 point; uniform float radius;" +
+      "void main(){" +
+      "  vec2 p = vUv - point.xy;" +
+      "  p.x *= aspectRatio;" +
+      "  vec3 s = exp(-dot(p, p) / radius) * color;" +
+      "  vec3 base = texture2D(uTarget, vUv).xyz;" +
+      "  gl_FragColor = vec4(base + s, 1.0);" +
+      "}";
+
+    var advectionShader =
+      "precision highp float; precision highp sampler2D;" +
+      "varying vec2 vUv;" +
+      "uniform sampler2D uVelocity; uniform sampler2D uSource;" +
+      "uniform vec2 texelSize; uniform vec2 dyeTexelSize;" +
+      "uniform float dt; uniform float dissipation;" +
+      "vec4 bilerp(sampler2D sam, vec2 uv, vec2 tsize){" +
+      "  vec2 st = uv / tsize - 0.5;" +
+      "  vec2 iuv = floor(st); vec2 fuv = fract(st);" +
+      "  vec4 a = texture2D(sam, (iuv + vec2(0.5, 0.5)) * tsize);" +
+      "  vec4 b = texture2D(sam, (iuv + vec2(1.5, 0.5)) * tsize);" +
+      "  vec4 c = texture2D(sam, (iuv + vec2(0.5, 1.5)) * tsize);" +
+      "  vec4 d = texture2D(sam, (iuv + vec2(1.5, 1.5)) * tsize);" +
+      "  return mix(mix(a, b, fuv.x), mix(c, d, fuv.x), fuv.y);" +
+      "}" +
+      "void main(){" +
+      "\n#ifdef MANUAL_FILTERING\n" +
+      "  vec2 coord = vUv - dt * bilerp(uVelocity, vUv, texelSize).xy * texelSize;" +
+      "  vec4 result = bilerp(uSource, coord, dyeTexelSize);" +
+      "\n#else\n" +
+      "  vec2 coord = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;" +
+      "  vec4 result = texture2D(uSource, coord);" +
+      "\n#endif\n" +
+      "  float decay = 1.0 + dissipation * dt;" +
+      "  gl_FragColor = result / decay;" +
+      "}";
+
+    var divergenceShader =
+      "precision mediump float; precision mediump sampler2D;" +
+      "varying highp vec2 vUv, vL, vR, vT, vB;" +
+      "uniform sampler2D uVelocity;" +
+      "void main(){" +
+      "  float L = texture2D(uVelocity, vL).x;" +
+      "  float R = texture2D(uVelocity, vR).x;" +
+      "  float T = texture2D(uVelocity, vT).y;" +
+      "  float B = texture2D(uVelocity, vB).y;" +
+      "  vec2 C = texture2D(uVelocity, vUv).xy;" +
+      "  if (vL.x < 0.0) { L = -C.x; }" +
+      "  if (vR.x > 1.0) { R = -C.x; }" +
+      "  if (vT.y > 1.0) { T = -C.y; }" +
+      "  if (vB.y < 0.0) { B = -C.y; }" +
+      "  float div = 0.5 * (R - L + T - B);" +
+      "  gl_FragColor = vec4(div, 0.0, 0.0, 1.0);" +
+      "}";
+
+    var curlShader =
+      "precision mediump float; precision mediump sampler2D;" +
+      "varying highp vec2 vUv, vL, vR, vT, vB;" +
+      "uniform sampler2D uVelocity;" +
+      "void main(){" +
+      "  float L = texture2D(uVelocity, vL).y;" +
+      "  float R = texture2D(uVelocity, vR).y;" +
+      "  float T = texture2D(uVelocity, vT).x;" +
+      "  float B = texture2D(uVelocity, vB).x;" +
+      "  float v = R - L - T + B;" +
+      "  gl_FragColor = vec4(0.5 * v, 0.0, 0.0, 1.0);" +
+      "}";
+
+    var vorticityShader =
+      "precision highp float; precision highp sampler2D;" +
+      "varying vec2 vUv, vL, vR, vT, vB;" +
+      "uniform sampler2D uVelocity; uniform sampler2D uCurl;" +
+      "uniform float curl; uniform float dt;" +
+      "void main(){" +
+      "  float L = texture2D(uCurl, vL).x;" +
+      "  float R = texture2D(uCurl, vR).x;" +
+      "  float T = texture2D(uCurl, vT).x;" +
+      "  float B = texture2D(uCurl, vB).x;" +
+      "  float C = texture2D(uCurl, vUv).x;" +
+      "  vec2 force = 0.5 * vec2(abs(T) - abs(B), abs(R) - abs(L));" +
+      "  force /= length(force) + 0.0001;" +
+      "  force *= curl * C;" +
+      "  force.y *= -1.0;" +
+      "  vec2 vel = texture2D(uVelocity, vUv).xy;" +
+      "  vel += force * dt;" +
+      "  vel = min(max(vel, -1000.0), 1000.0);" +
+      "  gl_FragColor = vec4(vel, 0.0, 1.0);" +
+      "}";
+
+    var pressureShader =
+      "precision mediump float; precision mediump sampler2D;" +
+      "varying highp vec2 vUv, vL, vR, vT, vB;" +
+      "uniform sampler2D uPressure; uniform sampler2D uDivergence;" +
+      "void main(){" +
+      "  float L = texture2D(uPressure, vL).x;" +
+      "  float R = texture2D(uPressure, vR).x;" +
+      "  float T = texture2D(uPressure, vT).x;" +
+      "  float B = texture2D(uPressure, vB).x;" +
+      "  float divergence = texture2D(uDivergence, vUv).x;" +
+      "  float p = (L + R + B + T - divergence) * 0.25;" +
+      "  gl_FragColor = vec4(p, 0.0, 0.0, 1.0);" +
+      "}";
+
+    var gradientSubtractShader =
+      "precision mediump float; precision mediump sampler2D;" +
+      "varying highp vec2 vUv, vL, vR, vT, vB;" +
+      "uniform sampler2D uPressure; uniform sampler2D uVelocity;" +
+      "void main(){" +
+      "  float L = texture2D(uPressure, vL).x;" +
+      "  float R = texture2D(uPressure, vR).x;" +
+      "  float T = texture2D(uPressure, vT).x;" +
+      "  float B = texture2D(uPressure, vB).x;" +
+      "  vec2 vel = texture2D(uVelocity, vUv).xy;" +
+      "  vel.xy -= vec2(R - L, T - B);" +
+      "  gl_FragColor = vec4(vel, 0.0, 1.0);" +
+      "}";
+
+    /* ── compilación ────────────────────────────────────── */
+    var broken = false;
+    function compile(type, source, keywords) {
+      var src = source;
+      if (keywords) {
+        var pre = "";
+        for (var k = 0; k < keywords.length; k++) pre += "#define " + keywords[k] + "\n";
+        src = pre + source;
+      }
+      var sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) { broken = true; return null; }
+      return sh;
+    }
+    function prog(fragSource, keywords) {
+      var vs = compile(gl.VERTEX_SHADER, baseVertex, null);
+      var fs = compile(gl.FRAGMENT_SHADER, fragSource, keywords);
+      if (!vs || !fs) { broken = true; return null; }
+      var pr = gl.createProgram();
+      gl.attachShader(pr, vs);
+      gl.attachShader(pr, fs);
+      gl.bindAttribLocation(pr, 0, "aPosition");
+      gl.linkProgram(pr);
+      if (!gl.getProgramParameter(pr, gl.LINK_STATUS)) { broken = true; return null; }
+      var u = {}, n = gl.getProgramParameter(pr, gl.ACTIVE_UNIFORMS);
+      for (var i = 0; i < n; i++) {
+        var name = gl.getActiveUniform(pr, i).name;
+        u[name] = gl.getUniformLocation(pr, name);
+      }
+      return { uniforms: u, bind: function () { gl.useProgram(pr); } };
+    }
+
+    var clearProgram = prog(clearShader, null);
+    var splatProgram = prog(splatShader, null);
+    var advectionProgram = prog(advectionShader, supportLinearFiltering ? null : ["MANUAL_FILTERING"]);
+    var divergenceProgram = prog(divergenceShader, null);
+    var curlProgram = prog(curlShader, null);
+    var vorticityProgram = prog(vorticityShader, null);
+    var pressureProgram = prog(pressureShader, null);
+    var gradientProgram = prog(gradientSubtractShader, null);
+    var displayProgram = prog(displayShader, config.SHADING ? ["SHADING"] : null);
+    if (broken) { cv.style.display = "none"; return; }
+
+    /* ── el quad que se dibuja en cada pasada ───────────── */
+    var blit = (function () {
+      var vb = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, vb);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, -1, 1, 1, 1, 1, -1]), gl.STATIC_DRAW);
+      var eb = gl.createBuffer();
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, eb);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0, 1, 2, 0, 2, 3]), gl.STATIC_DRAW);
+      gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(0);
+      return function (target, clear) {
+        if (target == null) {
+          gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        } else {
+          gl.viewport(0, 0, target.width, target.height);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+        }
+        if (clear) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+      };
+    })();
+
+    /* ── framebuffers ───────────────────────────────────── */
+    var dye, velocity, divergence, curlFbo, pressure;
+
+    function createFBO(fw, fh, internalFormat, format, type, param) {
+      gl.activeTexture(gl.TEXTURE0);
+      var tex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, param);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, param);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, fw, fh, 0, format, type, null);
+      var fbo = gl.createFramebuffer();
+      gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+      gl.viewport(0, 0, fw, fh);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      return {
+        texture: tex, fbo: fbo, width: fw, height: fh,
+        texelSizeX: 1 / fw, texelSizeY: 1 / fh,
+        attach: function (id) {
+          gl.activeTexture(gl.TEXTURE0 + id);
+          gl.bindTexture(gl.TEXTURE_2D, tex);
+          return id;
+        }
+      };
+    }
+    function createDoubleFBO(fw, fh, internalFormat, format, type, param) {
+      var a = createFBO(fw, fh, internalFormat, format, type, param);
+      var b = createFBO(fw, fh, internalFormat, format, type, param);
+      return {
+        width: fw, height: fh, texelSizeX: a.texelSizeX, texelSizeY: a.texelSizeY,
+        read: a, write: b,
+        swap: function () { var tmp = this.read; this.read = this.write; this.write = tmp; }
+      };
+    }
+    function resizeFBO(target, fw, fh, internalFormat, format, type, param) {
+      var next = createFBO(fw, fh, internalFormat, format, type, param);
+      clearProgram.bind();
+      gl.uniform1i(clearProgram.uniforms.uTexture, target.attach(0));
+      gl.uniform1f(clearProgram.uniforms.value, 1);
+      blit(next);
+      return next;
+    }
+    function resizeDoubleFBO(target, fw, fh, internalFormat, format, type, param) {
+      if (target.width === fw && target.height === fh) return target;
+      target.read = resizeFBO(target.read, fw, fh, internalFormat, format, type, param);
+      target.write = createFBO(fw, fh, internalFormat, format, type, param);
+      target.width = fw; target.height = fh;
+      target.texelSizeX = 1 / fw; target.texelSizeY = 1 / fh;
+      return target;
+    }
+    function getResolution(resolution) {
+      var aspect = gl.drawingBufferWidth / gl.drawingBufferHeight;
+      if (aspect < 1) aspect = 1 / aspect;
+      var min = Math.round(resolution), max = Math.round(resolution * aspect);
+      if (gl.drawingBufferWidth > gl.drawingBufferHeight) return { width: max, height: min };
+      return { width: min, height: max };
+    }
+    function initFramebuffers() {
+      var simRes = getResolution(config.SIM_RESOLUTION);
+      var dyeRes = getResolution(config.DYE_RESOLUTION);
+      var filtering = supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
+      gl.disable(gl.BLEND);
+
+      dye = dye
+        ? resizeDoubleFBO(dye, dyeRes.width, dyeRes.height, formatRGBA.internalFormat, formatRGBA.format, texType, filtering)
+        : createDoubleFBO(dyeRes.width, dyeRes.height, formatRGBA.internalFormat, formatRGBA.format, texType, filtering);
+      velocity = velocity
+        ? resizeDoubleFBO(velocity, simRes.width, simRes.height, formatRG.internalFormat, formatRG.format, texType, filtering)
+        : createDoubleFBO(simRes.width, simRes.height, formatRG.internalFormat, formatRG.format, texType, filtering);
+
+      divergence = createFBO(simRes.width, simRes.height, formatR.internalFormat, formatR.format, texType, gl.NEAREST);
+      curlFbo = createFBO(simRes.width, simRes.height, formatR.internalFormat, formatR.format, texType, gl.NEAREST);
+      pressure = createDoubleFBO(simRes.width, simRes.height, formatR.internalFormat, formatR.format, texType, gl.NEAREST);
+    }
+
+    /* ── lienzo ─────────────────────────────────────────── */
+    function scaleByPixelRatio(v) {
+      var r = window.devicePixelRatio || 1;
+      if (r > 2) r = 2;
+      return Math.floor(v * r);
+    }
+    function resizeCanvas() {
+      var nw = scaleByPixelRatio(cv.clientWidth);
+      var nh = scaleByPixelRatio(cv.clientHeight);
+      if (nw > 0 && nh > 0 && (cv.width !== nw || cv.height !== nh)) {
+        cv.width = nw; cv.height = nh;
+        return true;
+      }
+      return false;
+    }
+
+    /* ── color ──────────────────────────────────────────── */
+    var hue = Math.random();
+    function HSVtoRGB(hh, s, v) {
+      var i = Math.floor(hh * 6), f = hh * 6 - i;
+      var p = v * (1 - s), q = v * (1 - f * s), tt = v * (1 - (1 - f) * s);
+      var r, g2, b;
+      switch (i % 6) {
+        case 0: r = v; g2 = tt; b = p; break;
+        case 1: r = q; g2 = v; b = p; break;
+        case 2: r = p; g2 = v; b = tt; break;
+        case 3: r = p; g2 = q; b = v; break;
+        case 4: r = tt; g2 = p; b = v; break;
+        default: r = v; g2 = p; b = q; break;
+      }
+      return { r: r, g: g2, b: b };
+    }
+    function generateColor() {
+      // rainbow: el tono avanza, así que la estela recorre el espectro
+      hue = config.RAINBOW ? (hue + 0.012) % 1 : Math.random();
+      var c = HSVtoRGB(hue, 1, 1);
+      c.r *= 0.15; c.g *= 0.15; c.b *= 0.15;
+      return c;
+    }
+
+    /* ── puntero ────────────────────────────────────────── */
+    var pointer = {
+      moved: false, texcoordX: 0, texcoordY: 0,
+      prevTexcoordX: 0, prevTexcoordY: 0,
+      deltaX: 0, deltaY: 0, color: generateColor()
+    };
+    function correctDeltaX(d) { var a = cv.width / cv.height; return a < 1 ? d * a : d; }
+    function correctDeltaY(d) { var a = cv.width / cv.height; return a > 1 ? d / a : d; }
+    function correctRadius(r) { var a = cv.width / cv.height; return a > 1 ? r * a : r; }
+
+    function splat(x, y, dx, dy, color) {
+      splatProgram.bind();
+      gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read.attach(0));
+      gl.uniform1f(splatProgram.uniforms.aspectRatio, cv.width / cv.height);
+      gl.uniform2f(splatProgram.uniforms.point, x, y);
+      gl.uniform3f(splatProgram.uniforms.color, dx, dy, 0);
+      gl.uniform1f(splatProgram.uniforms.radius, correctRadius(config.SPLAT_RADIUS / 100));
+      blit(velocity.write);
+      velocity.swap();
+
+      gl.uniform1i(splatProgram.uniforms.uTarget, dye.read.attach(0));
+      gl.uniform3f(splatProgram.uniforms.color, color.r, color.g, color.b);
+      blit(dye.write);
+      dye.swap();
+    }
+    function burst(posX, posY) {
+      // el estallido del clic: varios chorros en abanico
+      for (var i = 0; i < 7; i++) {
+        var c = generateColor();
+        c.r *= 9; c.g *= 9; c.b *= 9;
+        splat(posX / cv.width, 1 - posY / cv.height,
+          900 * (Math.random() - 0.5) * config.FORCE,
+          900 * (Math.random() - 0.5) * config.FORCE, c);
       }
     }
 
-    if (pending.length) {
-      var io = new IntersectionObserver(function (entries) {
-        for (var e2 = 0; e2 < entries.length; e2++) {
-          if (!entries[e2].isIntersecting) continue;
-          var el = entries[e2].target;
-          var sibs = el.parentNode ? el.parentNode.children : [];
-          var pos = Array.prototype.indexOf.call(sibs, el);
-          el.style.transitionDelay = Math.min(pos, 5) * 80 + "ms";
-          el.classList.add("rv-in");
-          io.unobserve(el);
-        }
-      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+    /* ── el paso de simulación ──────────────────────────── */
+    function step(dt) {
+      gl.disable(gl.BLEND);
 
-      for (var p = 0; p < pending.length; p++) io.observe(pending[p]);
+      curlProgram.bind();
+      gl.uniform2f(curlProgram.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+      gl.uniform1i(curlProgram.uniforms.uVelocity, velocity.read.attach(0));
+      blit(curlFbo);
+
+      vorticityProgram.bind();
+      gl.uniform2f(vorticityProgram.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+      gl.uniform1i(vorticityProgram.uniforms.uVelocity, velocity.read.attach(0));
+      gl.uniform1i(vorticityProgram.uniforms.uCurl, curlFbo.attach(1));
+      gl.uniform1f(vorticityProgram.uniforms.curl, config.CURL);
+      gl.uniform1f(vorticityProgram.uniforms.dt, dt);
+      blit(velocity.write);
+      velocity.swap();
+
+      divergenceProgram.bind();
+      gl.uniform2f(divergenceProgram.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+      gl.uniform1i(divergenceProgram.uniforms.uVelocity, velocity.read.attach(0));
+      blit(divergence);
+
+      clearProgram.bind();
+      gl.uniform1i(clearProgram.uniforms.uTexture, pressure.read.attach(0));
+      gl.uniform1f(clearProgram.uniforms.value, config.PRESSURE);
+      blit(pressure.write);
+      pressure.swap();
+
+      pressureProgram.bind();
+      gl.uniform2f(pressureProgram.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+      gl.uniform1i(pressureProgram.uniforms.uDivergence, divergence.attach(0));
+      for (var i = 0; i < config.PRESSURE_ITERATIONS; i++) {
+        gl.uniform1i(pressureProgram.uniforms.uPressure, pressure.read.attach(1));
+        blit(pressure.write);
+        pressure.swap();
+      }
+
+      gradientProgram.bind();
+      gl.uniform2f(gradientProgram.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+      gl.uniform1i(gradientProgram.uniforms.uPressure, pressure.read.attach(0));
+      gl.uniform1i(gradientProgram.uniforms.uVelocity, velocity.read.attach(1));
+      blit(velocity.write);
+      velocity.swap();
+
+      advectionProgram.bind();
+      gl.uniform2f(advectionProgram.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);
+      if (!supportLinearFiltering) {
+        gl.uniform2f(advectionProgram.uniforms.dyeTexelSize, velocity.texelSizeX, velocity.texelSizeY);
+      }
+      var velId = velocity.read.attach(0);
+      gl.uniform1i(advectionProgram.uniforms.uVelocity, velId);
+      gl.uniform1i(advectionProgram.uniforms.uSource, velId);
+      gl.uniform1f(advectionProgram.uniforms.dt, dt);
+      gl.uniform1f(advectionProgram.uniforms.dissipation, config.VELOCITY_DISSIPATION);
+      blit(velocity.write);
+      velocity.swap();
+
+      if (!supportLinearFiltering) {
+        gl.uniform2f(advectionProgram.uniforms.dyeTexelSize, dye.texelSizeX, dye.texelSizeY);
+      }
+      gl.uniform1i(advectionProgram.uniforms.uVelocity, velocity.read.attach(0));
+      gl.uniform1i(advectionProgram.uniforms.uSource, dye.read.attach(1));
+      gl.uniform1f(advectionProgram.uniforms.dissipation, config.DENSITY_DISSIPATION);
+      blit(dye.write);
+      dye.swap();
     }
+
+    function render() {
+      // la tinta se compone sobre la página; donde no hay tinta,
+      // el canvas queda transparente y la tienda se ve normal
+      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+      gl.enable(gl.BLEND);
+      displayProgram.bind();
+      gl.uniform2f(displayProgram.uniforms.texelSize, 1 / gl.drawingBufferWidth, 1 / gl.drawingBufferHeight);
+      gl.uniform1i(displayProgram.uniforms.uTexture, dye.read.attach(0));
+      blit(null, true);
+    }
+
+    /* ── bucle ──────────────────────────────────────────── */
+    var lastTime = Date.now(), raf = null;
+    function frame() {
+      var now = Date.now();
+      var dt = Math.min((now - lastTime) / 1000, 0.016666);
+      lastTime = now;
+      if (resizeCanvas()) initFramebuffers();
+      if (pointer.moved) {
+        pointer.moved = false;
+        splat(pointer.texcoordX, pointer.texcoordY,
+          pointer.deltaX * config.SPLAT_FORCE * config.FORCE,
+          pointer.deltaY * config.SPLAT_FORCE * config.FORCE,
+          pointer.color);
+      }
+      step(dt);
+      render();
+      raf = window.requestAnimationFrame(frame);
+    }
+    function start() { if (!raf) { lastTime = Date.now(); raf = window.requestAnimationFrame(frame); } }
+    function stop() { if (raf) { window.cancelAnimationFrame(raf); raf = null; } }
+
+    /* ── entrada ────────────────────────────────────────── */
+    var slidesEl = $("slides");
+    var heroRect = hero ? hero.getBoundingClientRect() : null;
+    function remeasure() { heroRect = hero ? hero.getBoundingClientRect() : null; }
+    window.addEventListener("scroll", remeasure, { passive: true });
+    window.addEventListener("resize", remeasure, { passive: true });
+
+    function moveTo(clientX, clientY) {
+      var posX = scaleByPixelRatio(clientX);
+      var posY = scaleByPixelRatio(clientY);
+      pointer.prevTexcoordX = pointer.texcoordX;
+      pointer.prevTexcoordY = pointer.texcoordY;
+      pointer.texcoordX = posX / cv.width;
+      pointer.texcoordY = 1 - posY / cv.height;
+      pointer.deltaX = correctDeltaX(pointer.texcoordX - pointer.prevTexcoordX);
+      pointer.deltaY = correctDeltaY(pointer.texcoordY - pointer.prevTexcoordY);
+      pointer.moved = Math.abs(pointer.deltaX) > 0 || Math.abs(pointer.deltaY) > 0;
+      pointer.color = generateColor();
+    }
+
+    window.addEventListener("mousemove", function (ev) {
+      moveTo(ev.clientX, ev.clientY);
+      if (heroRect && slidesEl && ev.clientY < heroRect.bottom && heroRect.bottom > 0) {
+        var ppx = (ev.clientX / window.innerWidth - .5) * 18;
+        var ppy = (ev.clientY / Math.max(heroRect.height, 1) - .5) * 12;
+        slidesEl.style.transform = "translate3d(" + (-ppx) + "px," + (-ppy) + "px,0)";
+      }
+    }, { passive: true });
+
+    window.addEventListener("mousedown", function (ev) {
+      moveTo(ev.clientX, ev.clientY);
+      burst(scaleByPixelRatio(ev.clientX), scaleByPixelRatio(ev.clientY));
+    }, { passive: true });
+
+    window.addEventListener("touchmove", function (ev) {
+      var tp = ev.targetTouches[0];
+      if (tp) moveTo(tp.clientX, tp.clientY);
+    }, { passive: true });
+    window.addEventListener("touchstart", function (ev) {
+      var tp = ev.targetTouches[0];
+      if (!tp) return;
+      moveTo(tp.clientX, tp.clientY);
+      burst(scaleByPixelRatio(tp.clientX), scaleByPixelRatio(tp.clientY));
+    }, { passive: true });
+
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) stop(); else start();
+    });
+
+    /* ── arranque ───────────────────────────────────────── */
+    resizeCanvas();
+    initFramebuffers();
+    start();
   }
+
+  /* ═══════════════════════════════════════════════════════
+     ARRANQUE
+     ═══════════════════════════════════════════════════════ */
+  load();
+  buildNav();
+  renderCounts();
+  applyMarket();
+  renderCart();
+  reveal();
+  splash();
+  window.addEventListener("resize", function () { reveal(); }, { passive:true });
 })();
 </script>
 </body>
