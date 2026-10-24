@@ -735,7 +735,7 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
   "use strict";
 
   var ES = {
-    ticker: "Envío en 48-72 h en península · Canarias 3-5 días · Devoluciones gratuitas 14 días",
+    marquee: ["Envío en 48-72 h en península", "Canarias 3-5 días", "Devoluciones gratuitas 14 días"],
     ship: "48-72 h en península. Canarias en 3-5 días, con el IGIC calculado en el pedido.",
     ret: "14 días para cambiar o devolver, con etiqueta de retorno incluida.",
     pay: "Bizum, tarjeta y PayPal. Cobro seguro, sin guardar tus datos.",
@@ -743,7 +743,7 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
     key: "eur"
   };
   var MX = {
-    ticker: "Envío en 2-4 días en CDMX, Monterrey y Guadalajara · Pago contra entrega",
+    marquee: ["Envío en 2-4 días en CDMX, Monterrey y Guadalajara", "Pago contra entrega en efectivo", "Devoluciones 14 días con recogida"],
     ship: "2-4 días en las grandes ciudades, 5-7 días en el resto del país.",
     ret: "14 días para cambiar o devolver. Recogida a domicilio en zona urbana.",
     pay: "Pago contra entrega en efectivo. También tarjeta y PayPal.",
@@ -760,8 +760,12 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
     if (el) el.textContent = value;
   }
 
+  var tks = document.querySelectorAll(".tk");
+
   function apply(m, isEs) {
-    setText("ticker", m.ticker);
+    for (var t = 0; t < tks.length; t++) {
+      tks[t].textContent = m.marquee[t % m.marquee.length];
+    }
     setText("svc-ship", m.ship);
     setText("svc-ret", m.ret);
     setText("svc-pay", m.pay);
@@ -805,6 +809,101 @@ footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-da
       burger.setAttribute("aria-label", "Abrir menú");
     }
   });
+
+  // ── ¿el visitante quiere menos movimiento? ──────────────
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // ── carrusel del hero ───────────────────────────────────
+  var slides = document.querySelectorAll(".slide");
+  var dots = document.querySelectorAll(".dots button");
+  var current = 0;
+  var timer = null;
+  var HOLD = 6400;
+
+  function show(n) {
+    current = (n + slides.length) % slides.length;
+    for (var i = 0; i < slides.length; i++) {
+      slides[i].setAttribute("data-active", i === current ? "true" : "false");
+      if (dots[i]) {
+        // quitar y volver a poner para relanzar la barra de progreso
+        dots[i].setAttribute("aria-current", "false");
+        if (i === current) {
+          void dots[i].offsetWidth;
+          dots[i].setAttribute("aria-current", "true");
+        }
+      }
+    }
+  }
+
+  function play() {
+    if (calm || slides.length < 2 || timer) return;
+    timer = window.setInterval(function () { show(current + 1); }, HOLD);
+  }
+  function pause() {
+    if (timer) { window.clearInterval(timer); timer = null; }
+  }
+
+  for (var d = 0; d < dots.length; d++) {
+    (function (idx) {
+      dots[idx].addEventListener("click", function () { pause(); show(idx); play(); });
+    })(d);
+  }
+
+  var hero = document.querySelector(".hero");
+  if (hero) {
+    hero.addEventListener("mouseenter", pause);
+    hero.addEventListener("mouseleave", play);
+    hero.addEventListener("focusin", pause);
+    hero.addEventListener("focusout", play);
+  }
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) { pause(); } else { play(); }
+  });
+  play();
+
+  // ── añadir rápido sobre cada foto de producto ───────────
+  var cards = document.querySelectorAll(".card .frame");
+  for (var c = 0; c < cards.length; c++) {
+    var q = document.createElement("button");
+    q.type = "button";
+    q.className = "quick";
+    q.textContent = "Añadir a la cesta";
+    cards[c].appendChild(q);
+  }
+
+  // ── aparición al desplazar ──────────────────────────────
+  // Solo se esconde lo que ya está por debajo de la primera
+  // pantalla: lo que se ve al cargar nunca se oculta.
+  if (!calm && "IntersectionObserver" in window) {
+    var targets = document.querySelectorAll(
+      ".sec-head, .coll, .card, .ed-grid > .frame, .ed-copy, .service-grid > div, .wa .inner, .mock .shell"
+    );
+    var pending = [];
+    var fold = window.innerHeight * 0.92;
+
+    for (var t2 = 0; t2 < targets.length; t2++) {
+      if (targets[t2].getBoundingClientRect().top > fold) {
+        targets[t2].classList.add("rv");
+        pending.push(targets[t2]);
+      }
+    }
+
+    if (pending.length) {
+      var io = new IntersectionObserver(function (entries) {
+        for (var e2 = 0; e2 < entries.length; e2++) {
+          if (!entries[e2].isIntersecting) continue;
+          var el = entries[e2].target;
+          var sibs = el.parentNode ? el.parentNode.children : [];
+          var pos = Array.prototype.indexOf.call(sibs, el);
+          el.style.transitionDelay = Math.min(pos, 5) * 80 + "ms";
+          el.classList.add("rv-in");
+          io.unobserve(el);
+        }
+      }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+
+      for (var p = 0; p < pending.length; p++) io.observe(pending[p]);
+    }
+  }
 })();
 </script>
 </body>
