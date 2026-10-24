@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maresía · Moda femenina</title>
+<meta name="description" content="Maqueta de tienda de moda femenina para España y México. Propuesta de diseño preparada para Emilio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* ──────────────────────────────────────────────────────────────
+   Maresía — maqueta de tienda de moda femenina
+   Identidad: basalto canario, sal y vidrio de mar.
+   Mundo visual único y deliberado: una marca no cambia de
+   identidad según el sistema operativo de quien la visita.
+   ────────────────────────────────────────────────────────────── */
+:root{
+  --salt:#eceae5;
+  --paper:#f7f6f3;
+  --basalt:#171614;
+  --basalt-soft:#4a4642;
+  --dune:#a0968a;
+  --sea:#2f6360;
+  --sea-deep:#204a47;
+  --wine:#86404f;
+  --line:#d5cfc5;
+  --line-dark:#332f2a;
+
+  --step--1:clamp(.78rem,.76rem + .1vw,.84rem);
+  --step-0:clamp(.98rem,.95rem + .15vw,1.05rem);
+  --step-1:clamp(1.2rem,1.1rem + .45vw,1.45rem);
+  --step-2:clamp(1.6rem,1.35rem + 1.1vw,2.3rem);
+  --step-3:clamp(2.3rem,1.6rem + 3.4vw,4.6rem);
+
+  --gut:clamp(1.1rem,.6rem + 2vw,2rem);
+  --shell:78rem;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  margin:0;
+  background:var(--salt);
+  color:var(--basalt);
+  font-family:"Jost",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  font-weight:300;
+  font-size:var(--step-0);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--sea);outline-offset:3px}
+h1,h2,h3{margin:0;font-weight:400}
+
+.shell{width:100%;max-width:var(--shell);margin-inline:auto;padding-inline:var(--gut)}
+.lab{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;font-weight:400;line-height:1.4}
+.serif{font-family:"Bodoni Moda",Didot,"Times New Roman",Georgia,serif}
+
+.skip{
+  position:absolute;left:-9999px;top:0;z-index:200;
+  background:var(--basalt);color:var(--salt);padding:.7rem 1.1rem;
+}
+.skip:focus{left:.5rem;top:.5rem}
+
+/* ── barra de servicio ───────────────────────────────────── */
+.ticker{background:var(--basalt);color:var(--salt);text-align:center;padding:.6rem var(--gut)}
+.ticker span{color:#e7e3dc}
+
+/* ── cabecera ────────────────────────────────────────────── */
+.site-head{
+  position:sticky;top:0;z-index:100;
+  background:rgba(236,234,229,.88);
+  backdrop-filter:saturate(1.4) blur(14px);
+  -webkit-backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.bar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:1rem;padding:1.1rem 0}
+.nav-desk{display:flex;gap:1.75rem}
+.nav-desk a{position:relative;padding-block:.15rem}
+.nav-desk a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;
+  background:var(--basalt);transform:scaleX(0);transform-origin:left;
+}
+.nav-desk a:hover::after,.nav-desk a:focus-visible::after{transform:scaleX(1)}
+.wordmark{
+  font-size:clamp(1.5rem,1.2rem + 1vw,2rem);letter-spacing:.24em;
+  text-transform:uppercase;text-align:center;line-height:1;white-space:nowrap;
+}
+.util{display:flex;justify-content:flex-end;align-items:center;gap:1.1rem}
+.market{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--paper)}
+.market button{padding:.34rem .72rem;letter-spacing:.14em;font-size:.62rem;text-transform:uppercase;white-space:nowrap}
+.market button[aria-pressed="true"]{background:var(--basalt);color:var(--salt)}
+.burger{display:none;width:2.2rem;height:2.2rem;place-items:center}
+.burger svg{width:1.3rem;height:1.3rem;stroke:var(--basalt);stroke-width:1.4;fill:none}
+.nav-mob{display:none;border-top:1px solid var(--line);padding:.5rem 0 1.1rem}
+.nav-mob ul{list-style:none;margin:0;padding:0;display:grid}
+.nav-mob a{display:block;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.nav-mob[data-open="true"]{display:block}
+
+@media(max-width:900px){
+  .bar{grid-template-columns:auto 1fr auto;padding:.9rem 0}
+  .nav-desk{display:none}
+  .burger{display:grid}
+  .wordmark{text-align:center}
+  .util .cart{display:none}
+}
+
+/* ── hero ────────────────────────────────────────────────── */
+.hero{position:relative;isolation:isolate;min-height:clamp(30rem,70vh,46rem);display:grid;align-items:end}
+.slides{position:absolute;inset:0;z-index:-2;overflow:hidden;background:var(--basalt)}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.5s cubic-bezier(.4,0,.2,1)}
+.slide[data-active="true"]{opacity:1}
+.slide img{width:100%;height:100%;object-fit:cover;object-position:50% 28%;transform-origin:52% 40%}
+.slide[data-active="true"] img{animation:drift 17s ease-in-out infinite alternate}
+@keyframes drift{from{transform:scale(1.015)}to{transform:scale(1.11)}}
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(23,22,20,.42) 0%,rgba(23,22,20,.08) 38%,rgba(23,22,20,.78) 100%);
+}
+.hero-copy{padding-block:clamp(2.5rem,6vw,5rem);color:#f6f4f0;max-width:34rem}
+.hero-copy .eyebrow{display:block;color:#cfe0dc;margin-bottom:1rem}
+.hero-copy h1{font-size:var(--step-3);line-height:1.02;letter-spacing:-.015em;text-wrap:balance;margin-bottom:1.1rem}
+.hero-copy h1 em{font-style:italic}
+.hero-copy p{margin:0 0 1.9rem;max-width:30ch;color:#e4e0da}
+.cta{display:flex;flex-wrap:wrap;gap:.9rem 1.4rem;align-items:center}
+.btn{
+  display:inline-block;padding:.9rem 2rem;background:var(--salt);color:var(--basalt);
+  letter-spacing:.16em;font-size:.68rem;text-transform:uppercase;
+  transition:background .22s ease,color .22s ease;
+}
+.btn:hover{background:var(--sea-deep);color:#f4f2ee}
+.btn-dark{background:var(--basalt);color:var(--salt)}
+.btn-dark:hover{background:var(--sea-deep)}
+.btn-ghost{
+  padding-block:.9rem;border-bottom:1px solid currentColor;
+  letter-spacing:.16em;font-size:.68rem;text-transform:uppercase;
+  transition:opacity .22s ease;
+}
+.btn-ghost:hover{opacity:.7}
+
+/* ── secciones ───────────────────────────────────────────── */
+section{padding-block:clamp(3rem,7vw,5.5rem)}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:clamp(1.3rem,3vw,2.1rem);flex-wrap:wrap}
+.sec-head h2{font-size:var(--step-2);letter-spacing:-.005em}
+.sec-head .lab{color:var(--basalt-soft)}
+
+/* fotos: marco fijo para que no haya salto de maquetación */
+.frame{position:relative;overflow:hidden;background:var(--line);aspect-ratio:3/4}
+.frame img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.3,1)}
+a:hover .frame img,.card:hover .frame img{transform:scale(1.045)}
+@media(prefers-reduced-motion:reduce){.frame img{transition:none}a:hover .frame img,.card:hover .frame img{transform:none}}
+
+/* colecciones */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(.7rem,1.6vw,1.25rem)}
+@media(max-width:760px){.trio{grid-template-columns:1fr}.trio .frame{aspect-ratio:4/3}}
+.coll{display:block}
+.coll .frame{aspect-ratio:3/4}
+.coll figcaption{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;padding-top:.8rem}
+.coll .nm{font-size:var(--step-1)}
+.coll .ct{color:var(--dune);font-size:var(--step--1)}
+
+/* rejilla de producto */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.2vw,1.9rem) clamp(.7rem,1.6vw,1.25rem)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.grid{grid-template-columns:1fr}}
+.card{display:grid;gap:.65rem;align-content:start}
+.card h3{font-size:var(--step-0);line-height:1.35}
+.flag{
+  position:absolute;top:.75rem;left:.75rem;z-index:2;
+  background:var(--wine);color:#f8f2f2;padding:.24rem .55rem;
+}
+.flag.soft{background:var(--paper);color:var(--basalt)}
+.price{display:flex;gap:.6rem;align-items:baseline;font-variant-numeric:tabular-nums}
+.price .was{color:var(--dune);text-decoration:line-through;font-size:var(--step--1)}
+.sizes{display:flex;gap:.35rem;flex-wrap:wrap}
+.sizes button{
+  min-width:2rem;height:2rem;padding-inline:.3rem;border:1px solid var(--line);
+  font-size:.7rem;letter-spacing:.04em;display:grid;place-items:center;
+  transition:background .2s ease,color .2s ease,border-color .2s ease;
+}
+.sizes button:hover:not([disabled]){border-color:var(--basalt)}
+.sizes button[aria-pressed="true"]{background:var(--basalt);color:var(--salt);border-color:var(--basalt)}
+.sizes button[disabled]{color:var(--dune);border-style:dashed;cursor:not-allowed;text-decoration:line-through}
+
+/* banda editorial */
+.editorial{background:var(--paper)}
+.ed-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(1.5rem,4vw,4rem);align-items:center}
+@media(max-width:860px){.ed-grid{grid-template-columns:1fr}}
+.ed-grid .frame{aspect-ratio:5/4}
+.ed-copy .eyebrow{display:block;color:var(--sea);margin-bottom:.9rem}
+.ed-copy h2{font-size:var(--step-2);line-height:1.1;margin-bottom:1rem;text-wrap:balance}
+.ed-copy p{margin:0 0 1rem;color:var(--basalt-soft);max-width:44ch}
+
+/* servicio */
+.service{border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:0}
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+@media(max-width:760px){.service-grid{grid-template-columns:1fr}}
+.service-grid>div{padding:clamp(1.4rem,3vw,2.2rem) clamp(1rem,2vw,1.8rem);border-right:1px solid var(--line)}
+.service-grid>div:last-child{border-right:none}
+@media(max-width:760px){
+  .service-grid>div{border-right:none;border-bottom:1px solid var(--line)}
+  .service-grid>div:last-child{border-bottom:none}
+}
+.service dt{margin-bottom:.5rem;color:var(--sea)}
+.service dd{margin:0;color:var(--basalt-soft);max-width:32ch;font-size:var(--step--1)}
+
+/* whatsapp */
+.wa{background:var(--basalt);color:#f3f1ec;text-align:center}
+.wa .inner{max-width:38rem;margin-inline:auto}
+.wa .eyebrow{display:block;color:#9ec4bd;margin-bottom:.9rem}
+.wa h2{font-size:var(--step-2);line-height:1.12;margin-bottom:.9rem;text-wrap:balance}
+.wa p{margin:0 auto 1.8rem;color:#c9c4bb;max-width:42ch}
+.wa .hours{margin-top:1.2rem;color:var(--dune);font-size:var(--step--1)}
+.wa .btn{background:var(--salt);color:var(--basalt)}
+.wa .btn:hover{background:var(--sea);color:#f4f2ee}
+
+/* pie */
+footer{background:var(--basalt);color:#e7e3dc;border-top:1px solid var(--line-dark)}
+.fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:clamp(1.5rem,3vw,2.5rem);padding-block:clamp(2.5rem,5vw,3.5rem)}
+@media(max-width:760px){.fgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.fgrid{grid-template-columns:1fr}}
+.fgrid .wordmark{text-align:left;font-size:1.4rem;margin-bottom:.9rem}
+.fgrid .about p{margin:0;color:#b5aea4;font-size:var(--step--1);max-width:32ch}
+.fcol .lab{display:block;color:var(--dune);margin-bottom:1rem}
+.fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:.55rem;font-size:var(--step--1)}
+.fcol a:hover{text-decoration:underline;text-underline-offset:3px}
+.legal{
+  border-top:1px solid var(--line-dark);padding-block:1.1rem 1.5rem;
+  display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;justify-content:space-between;color:var(--dune);
+}
+
+/* nota de maqueta */
+.mock{background:var(--sea-deep);color:#e3efec}
+.mock .shell{padding-block:1.6rem;display:grid;gap:.45rem}
+.mock .lab{color:#a9cdc6}
+.mock p{margin:0;font-size:var(--step--1);max-width:72ch;color:#d3e3e0}
+.mock a{text-decoration:underline;text-underline-offset:3px}
+
+/* botón flotante */
+.float{
+  position:fixed;right:clamp(.9rem,2vw,1.6rem);bottom:clamp(.9rem,2vw,1.6rem);z-index:120;
+  display:flex;align-items:center;gap:.55rem;
+  background:var(--sea-deep);color:#f1f7f5;padding:.7rem 1.1rem;border-radius:999px;
+  box-shadow:0 6px 24px rgba(23,22,20,.26);
+  font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+  transition:transform .22s ease,background .22s ease;
+}
+.float:hover{background:var(--sea);transform:translateY(-2px)}
+.float svg{width:1.05rem;height:1.05rem;stroke:currentColor;stroke-width:1.5;fill:none;flex:none}
+@media(max-width:520px){.float span{display:none}.float{padding:.85rem;border-radius:50%}}
+.float::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;
+  border:1px solid var(--sea);pointer-events:none;
+  animation:ring 3.2s ease-out infinite;
+}
+@keyframes ring{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.4);opacity:0}100%{transform:scale(1.4);opacity:0}}
+
+/* ──────────────────────────────────────────────────────────────
+   MOVIMIENTO
+   Regla de oro: el estado de reposo es el estado visible. Nada
+   queda escondido esperando un observador — si el JS no corre o
+   el visitante pide menos movimiento, la página se lee completa.
+   ────────────────────────────────────────────────────────────── */
+
+/* marquesina de servicio */
+.ticker{overflow:hidden;padding-inline:0}
+.marquee{display:flex;width:max-content;animation:slide 44s linear infinite}
+.ticker:hover .marquee,.ticker:focus-within .marquee{animation-play-state:paused}
+.mgroup{display:flex;flex:none}
+.mgroup span{padding-inline:1.5rem;white-space:nowrap;position:relative}
+.mgroup span::after{content:"";position:absolute;right:0;top:50%;width:3px;height:3px;border-radius:50%;background:var(--dune)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* entrada del hero */
+.hero-copy>*{animation:rise .95s cubic-bezier(.16,.8,.28,1) backwards}
+.hero-copy>.eyebrow{animation-delay:.1s}
+.hero-copy>h1{animation-delay:.2s}
+.hero-copy>p{animation-delay:.32s}
+.hero-copy>.cta{animation-delay:.44s}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+
+/* indicadores del hero */
+.dots{
+  position:absolute;right:var(--gut);bottom:clamp(1.4rem,3.5vw,2.6rem);
+  z-index:3;display:flex;gap:.55rem;
+}
+.dots button{
+  width:clamp(1.8rem,5vw,2.8rem);height:2px;padding:0;
+  background:rgba(246,244,240,.3);position:relative;overflow:hidden;
+}
+.dots button::before{
+  content:"";position:absolute;inset:0;background:#f6f4f0;
+  transform:scaleX(0);transform-origin:left;
+}
+.dots button[aria-current="true"]::before{animation:fill 6.4s linear forwards}
+.dots button:hover::before{transform:scaleX(1)}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* aparición al desplazar — las clases las pone el JS, nunca el CSS base */
+.rv{opacity:0;transform:translateY(18px)}
+.rv-in{
+  opacity:1;transform:none;
+  transition:opacity .85s cubic-bezier(.16,.8,.28,1),transform .85s cubic-bezier(.16,.8,.28,1);
+}
+
+/* barrido de los botones */
+.btn{position:relative;overflow:hidden;z-index:0}
+.btn::before{
+  content:"";position:absolute;inset:0;z-index:-1;background:var(--sea-deep);
+  transform:translateY(101%);transition:transform .45s cubic-bezier(.16,.8,.28,1);
+}
+.btn:hover::before,.btn:focus-visible::before{transform:translateY(0)}
+.btn-dark::before{background:var(--sea)}
+.wa .btn::before{background:var(--sea)}
+
+/* añadir rápido sobre la foto */
+.quick{
+  position:absolute;left:.55rem;right:.55rem;bottom:.55rem;z-index:2;
+  background:rgba(23,22,20,.86);color:#f4f2ee;padding:.62rem;
+  letter-spacing:.14em;font-size:.63rem;text-transform:uppercase;text-align:center;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  transform:translateY(calc(100% + .55rem));
+  transition:transform .42s cubic-bezier(.16,.8,.28,1),background .25s ease;
+}
+.card:hover .quick,.card:focus-within .quick{transform:translateY(0)}
+.quick:hover{background:var(--sea-deep)}
+@media(hover:none){.quick{transform:translateY(0);background:rgba(23,22,20,.7)}}
+
+/* el interruptor general */
+@media(prefers-reduced-motion:reduce){
+  .marquee{animation:none;width:100%;justify-content:center}
+  .mgroup.dup{display:none}
+  .mgroup span:last-child::after{display:none}
+  .slide,.slide[data-active="true"] img{transition:none;animation:none}
+  .hero-copy>*{animation:none}
+  .dots button[aria-current="true"]::before{animation:none;transform:scaleX(1)}
+  .rv{opacity:1;transform:none}
+  .rv-in{transition:none}
+  .btn::before{transition:none}
+  .quick{transition:none;transform:translateY(0)}
+  .float::after{animation:none;opacity:0}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<div class="ticker">
+  <div class="marquee">
+    <div class="mgroup">
+      <span class="lab tk">Envío en 48-72 h en península</span>
+      <span class="lab tk">Canarias 3-5 días</span>
+      <span class="lab tk">Devoluciones gratuitas 14 días</span>
+    </div>
+    <div class="mgroup dup" aria-hidden="true">
+      <span class="lab tk">Envío en 48-72 h en península</span>
+      <span class="lab tk">Canarias 3-5 días</span>
+      <span class="lab tk">Devoluciones gratuitas 14 días</span>
+    </div>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="shell">
+    <div class="bar">
+      <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="nav-mob" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <nav class="nav-desk" aria-label="Principal">
+        <a href="#novedades">Novedades</a>
+        <a href="#vestidos">Vestidos</a>
+        <a href="#punto">Punto</a>
+        <a href="#abrigos">Abrigos</a>
+      </nav>
+      <a class="wordmark serif" href="#top">Maresía</a>
+      <div class="util">
+        <div class="market" role="group" aria-label="Mercado y moneda">
+          <button type="button" id="btn-es" aria-pressed="true">España €</button>
+          <button type="button" id="btn-mx" aria-pressed="false">México $</button>
+        </div>
+        <a class="lab cart" href="#">Carrito (0)</a>
+      </div>
+    </div>
+    <nav class="nav-mob" id="nav-mob" aria-label="Principal móvil">
+      <ul>
+        <li><a href="#novedades">Novedades</a></li>
+        <li><a href="#vestidos">Vestidos</a></li>
+        <li><a href="#punto">Punto</a></li>
+        <li><a href="#abrigos">Abrigos</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ── hero ───────────────────────────────────────────── -->
+  <div class="hero" id="top">
+    <div class="slides">
+      <div class="slide" data-active="true">
+        <img
+          src="https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=1600&q=80"
+          srcset="https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=900&q=75 900w,
+                  https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=1600&q=80 1600w,
+                  https://images.unsplash.com/photo-1601762603339-fd61e28b698a?auto=format&fit=crop&w=2200&q=80 2200w"
+          sizes="100vw"
+          alt="Mujer con gabardina gris de talle largo en la calle, luz de otoño"
+          fetchpriority="high" width="1600" height="1067">
+      </div>
+      <div class="slide">
+        <img
+          src="https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          srcset="https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                  https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=1600 1600w,
+                  https://images.pexels.com/photos/16797461/pexels-photo-16797461.jpeg?auto=compress&cs=tinysrgb&w=2200 2200w"
+          sizes="100vw"
+          alt="Grupo de mujeres con ropa de temporada en una calle arbolada en otoño"
+          loading="lazy" width="1600" height="1067">
+      </div>
+      <div class="slide">
+        <img
+          src="https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=1600"
+          srcset="https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                  https://images.pexels.com/photos/7060330/pexels-photo-7060330.jpeg?auto=compress&cs=tinysrgb&w=1600 1600w"
+          sizes="100vw"
+          alt="Mujer elegante con gafas de sol posando al aire libre"
+          loading="lazy" width="1600" height="1067">
+      </div>
+    </div>
+    <div class="dots" role="group" aria-label="Imágenes de portada">
+      <button type="button" aria-current="true" aria-label="Imagen 1 de 3"></button>
+      <button type="button" aria-current="false" aria-label="Imagen 2 de 3"></button>
+      <button type="button" aria-current="false" aria-label="Imagen 3 de 3"></button>
+    </div>
+    <div class="shell hero-copy">
+      <span class="lab eyebrow">Otoño · Invierno 26</span>
+      <h1 class="serif">La temporada se mide en <em>capas</em></h1>
+      <p>Punto grueso, lanas lavables y siluetas que aguantan el viento de octubre. Seleccionado pieza a pieza, no por catálogo.</p>
+      <div class="cta">
+        <a class="btn" href="#novedades">Ver novedades</a>
+        <a class="btn-ghost" href="#vestidos">Vestidos de temporada</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── colecciones ────────────────────────────────────── -->
+  <section class="shell">
+    <div class="sec-head">
+      <h2 class="serif">Colecciones</h2>
+      <a class="lab" href="#novedades">Ver todo</a>
+    </div>
+    <div class="trio">
+
+      <a class="coll" href="#novedades" id="vestidos">
+        <figure style="margin:0">
+          <div class="frame">
+            <img src="https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=900"
+                 srcset="https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
+                         https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                         https://images.pexels.com/photos/9823635/pexels-photo-9823635.jpeg?auto=compress&cs=tinysrgb&w=1300 1300w"
+                 sizes="(max-width:760px) 92vw, 31vw"
+                 alt="Mujer con vestido negro de manga larga entre árboles en otoño"
+                 loading="lazy" width="900" height="1200">
+          </div>
+          <figcaption><span class="nm serif">Vestidos</span><span class="ct">14 piezas</span></figcaption>
+        </figure>
+      </a>
+
+      <a class="coll" href="#novedades" id="punto">
+        <figure style="margin:0">
+          <div class="frame">
+            <img src="https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=900&q=80"
+                 srcset="https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=600&q=75 600w,
+                         https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=900&q=80 900w,
+                         https://images.unsplash.com/photo-1588271968087-4c51abe05afc?auto=format&fit=crop&w=1300&q=80 1300w"
+                 sizes="(max-width:760px) 92vw, 31vw"
+                 alt="Mujer con jersey de punto blanco de cuello alto"
+                 loading="lazy" width="900" height="1200">
+          </div>
+          <figcaption><span class="nm serif">Punto</span><span class="ct">11 piezas</span></figcaption>
+        </figure>
+      </a>
+
+      <a class="coll" href="#novedades" id="abrigos">
+        <figure style="margin:0">
+          <div class="frame">
+            <img src="https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=900"
+                 srcset="https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
+                         https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=900 900w,
+                         https://images.pexels.com/photos/31472796/pexels-photo-31472796.jpeg?auto=compress&cs=tinysrgb&w=1300 1300w"
+                 sizes="(max-width:760px) 92vw, 31vw"
+                 alt="Mujer paseando por un parque en otoño con abrigo y bufanda"
+                 loading="lazy" width="900" height="1200">
+          </div>
+          <figcaption><span class="nm serif">Abrigos</span><span class="ct">8 piezas</span></figcaption>
+        </figure>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── novedades ──────────────────────────────────────── -->
+  <section class="shell" id="novedades">
+    <div class="sec-head">
+      <h2 class="serif">Novedades</h2>
+      <span class="lab">32 productos</span>
+    </div>
+    <div class="grid">
+
+      <article class="card">
+        <div class="frame">
+          <img src="https://images.pexels.com/photos/19389008/pexels-photo-19389008.jpeg?auto=compress&cs=tinysrgb&w=900"
+               srcset="https://images.pexels.com/photos/19389008/pexels-photo-19389008.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
+                       https://images.pexels.com/photos/19389008/pexels-photo-19389008.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
+               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
+               alt="Vestido largo fluido en tono naranja sobre escalones de piedra"
+               loading="lazy" width="900" height="1200">
+        </div>
+        <h3>Vestido largo satinado</h3>
+        <div class="price"><span class="now" data-eur="59,95 €" data-mxn="1.319 $">59,95 €</span></div>
+        <div class="sizes" role="group" aria-label="Tallas de Vestido largo satinado">
+          <button type="button" aria-pressed="false">S</button>
+          <button type="button" aria-pressed="true">M</button>
+          <button type="button" aria-pressed="false">L</button>
+          <button type="button" aria-pressed="false">XL</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="frame">
+          <img src="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=900&q=80"
+               srcset="https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=600&q=75 600w,
+                       https://images.unsplash.com/photo-1571513722275-4b41940f54b8?auto=format&fit=crop&w=900&q=80 900w"
+               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
+               alt="Mujer con blazer blanco de corte amplio"
+               loading="lazy" width="900" height="1200">
+        </div>
+        <h3>Blazer oversize de lana</h3>
+        <div class="price"><span class="now" data-eur="79,95 €" data-mxn="1.749 $">79,95 €</span></div>
+        <div class="sizes" role="group" aria-label="Tallas de Blazer oversize de lana">
+          <button type="button" aria-pressed="false">S</button>
+          <button type="button" aria-pressed="false">M</button>
+          <button type="button" aria-pressed="false">L</button>
+          <button type="button" aria-pressed="false">XL</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="frame">
+          <span class="lab flag">Últimas tallas</span>
+          <img src="https://images.unsplash.com/photo-1587999882859-34b3f313df77?auto=format&fit=crop&w=900&q=80"
+               srcset="https://images.unsplash.com/photo-1587999882859-34b3f313df77?auto=format&fit=crop&w=600&q=75 600w,
+                       https://images.unsplash.com/photo-1587999882859-34b3f313df77?auto=format&fit=crop&w=900&q=80 900w"
+               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
+               alt="Mujer con jersey de punto color crema sentada en un campo"
+               loading="lazy" width="900" height="1200">
+        </div>
+        <h3>Jersey de punto trenzado</h3>
+        <div class="price">
+          <span class="now" data-eur="39,95 €" data-mxn="879 $">39,95 €</span>
+          <span class="was" data-eur="54,95 €" data-mxn="1.209 $">54,95 €</span>
+        </div>
+        <div class="sizes" role="group" aria-label="Tallas de Jersey de punto trenzado">
+          <button type="button" disabled aria-pressed="false">S</button>
+          <button type="button" aria-pressed="false">M</button>
+          <button type="button" aria-pressed="false">L</button>
+          <button type="button" disabled aria-pressed="false">XL</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="frame">
+          <img src="https://images.pexels.com/photos/6138908/pexels-photo-6138908.jpeg?auto=compress&cs=tinysrgb&w=900"
+               srcset="https://images.pexels.com/photos/6138908/pexels-photo-6138908.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
+                       https://images.pexels.com/photos/6138908/pexels-photo-6138908.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
+               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
+               alt="Mujer con falda negra y gafas de sol en una calle de ciudad"
+               loading="lazy" width="900" height="1200">
+        </div>
+        <h3>Falda midi de tiro alto</h3>
+        <div class="price"><span class="now" data-eur="35,95 €" data-mxn="789 $">35,95 €</span></div>
+        <div class="sizes" role="group" aria-label="Tallas de Falda midi de tiro alto">
+          <button type="button" aria-pressed="false">S</button>
+          <button type="button" aria-pressed="false">M</button>
+          <button type="button" aria-pressed="false">L</button>
+          <button type="button" aria-pressed="false">XL</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="frame">
+          <span class="lab flag soft">Nuevo</span>
+          <img src="https://images.pexels.com/photos/6209914/pexels-photo-6209914.jpeg?auto=compress&cs=tinysrgb&w=900"
+               srcset="https://images.pexels.com/photos/6209914/pexels-photo-6209914.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
+                       https://images.pexels.com/photos/6209914/pexels-photo-6209914.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
+               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
+               alt="Mujer con abrigo y sombrero caminando por un sendero cubierto de hojas"
+               loading="lazy" width="900" height="1200">
+        </div>
+        <h3>Gabardina cruzada</h3>
+        <div class="price"><span class="now" data-eur="94,95 €" data-mxn="2.089 $">94,95 €</span></div>
+        <div class="sizes" role="group" aria-label="Tallas de Gabardina cruzada">
+          <button type="button" aria-pressed="false">S</button>
+          <button type="button" aria-pressed="false">M</button>
+          <button type="button" aria-pressed="false">L</button>
+          <button type="button" disabled aria-pressed="false">XL</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="frame">
+          <img src="https://images.pexels.com/photos/36503930/pexels-photo-36503930.jpeg?auto=compress&cs=tinysrgb&w=900"
+               srcset="https://images.pexels.com/photos/36503930/pexels-photo-36503930.jpeg?auto=compress&cs=tinysrgb&w=600 600w,
+                       https://images.pexels.com/photos/36503930/pexels-photo-36503930.jpeg?auto=compress&cs=tinysrgb&w=900 900w"
+               sizes="(max-width:420px) 92vw, (max-width:900px) 46vw, 31vw"
+               alt="Mujer con vestido de cuadros rojo sosteniendo hojas de otoño"
+               loading="lazy" width="900" height="1200">
+        </div>
+        <h3>Vestido midi de cuadros</h3>
+        <div class="price"><span class="now" data-eur="49,95 €" data-mxn="1.099 $">49,95 €</span></div>
+        <div class="sizes" role="group" aria-label="Tallas de Vestido midi de cuadros">
+          <button type="button" aria-pressed="false">S</button>
+          <button type="button" aria-pressed="false">M</button>
+          <button type="button" aria-pressed="true">L</button>
+          <button type="button" aria-pressed="false">XL</button>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── banda editorial ────────────────────────────────── -->
+  <section class="editorial">
+    <div class="shell ed-grid">
+      <div class="frame" style="aspect-ratio:5/4">
+        <img src="https://images.pexels.com/photos/31884491/pexels-photo-31884491.jpeg?auto=compress&cs=tinysrgb&w=1200"
+             srcset="https://images.pexels.com/photos/31884491/pexels-photo-31884491.jpeg?auto=compress&cs=tinysrgb&w=700 700w,
+                     https://images.pexels.com/photos/31884491/pexels-photo-31884491.jpeg?auto=compress&cs=tinysrgb&w=1200 1200w"
+             sizes="(max-width:860px) 92vw, 48vw"
+             alt="Dos mujeres con conjuntos de temporada bajo palmeras"
+             loading="lazy" width="1200" height="960">
+      </div>
+      <div class="ed-copy">
+        <span class="lab eyebrow">Desde Canarias</span>
+        <h2 class="serif">Ropa pensada para un invierno templado</h2>
+        <p>Aquí el frío no llega como en la península, así que la selección se hace a otra escala: capas ligeras, punto fino y tejidos que funcionan a veinte grados y con viento.</p>
+        <p>Enviamos a toda España, a la Unión Europea y a México, con las tallas y las medidas reales de cada prenda publicadas en su ficha.</p>
+        <a class="btn btn-dark" href="#novedades">Ver la selección</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── servicio ───────────────────────────────────────── -->
+  <section class="service" style="padding-block:0">
+    <dl class="shell service-grid" style="padding-inline:0;margin:0">
+      <div><dt class="lab">Envío</dt><dd id="svc-ship">48-72 h en península. Canarias en 3-5 días, con el IGIC calculado en el pedido.</dd></div>
+      <div><dt class="lab">Devoluciones</dt><dd id="svc-ret">14 días para cambiar o devolver, con etiqueta de retorno incluida.</dd></div>
+      <div><dt class="lab">Pago</dt><dd id="svc-pay">Bizum, tarjeta y PayPal. Cobro seguro, sin guardar tus datos.</dd></div>
+    </dl>
+  </section>
+
+  <!-- ── whatsapp ───────────────────────────────────────── -->
+  <section class="wa">
+    <div class="shell inner">
+      <span class="lab eyebrow">Atención personal</span>
+      <h2 class="serif">¿Dudas con la talla? Escríbenos</h2>
+      <p>Te contamos por WhatsApp las medidas reales de la prenda antes de que compres. Una persona, no un robot.</p>
+      <a class="btn" href="#">Abrir WhatsApp</a>
+      <p class="hours">Lunes a sábado, de 10:00 a 20:00 (hora de Canarias)</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="shell">
+    <div class="fgrid">
+      <div class="about">
+        <div class="wordmark serif">Maresía</div>
+        <p>Moda femenina seleccionada desde Canarias. Enviamos a España, la Unión Europea y México.</p>
+      </div>
+      <div class="fcol">
+        <span class="lab">Tienda</span>
+        <ul>
+          <li><a href="#novedades">Novedades</a></li>
+          <li><a href="#vestidos">Vestidos</a></li>
+          <li><a href="#punto">Punto</a></li>
+          <li><a href="#abrigos">Abrigos</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <span class="lab">Ayuda</span>
+        <ul>
+          <li><a href="#">Guía de tallas</a></li>
+          <li><a href="#">Envíos y plazos</a></li>
+          <li><a href="#">Cambios y devoluciones</a></li>
+          <li><a href="#">Seguir mi pedido</a></li>
+        </ul>
+      </div>
+      <div class="fcol">
+        <span class="lab">Legal</span>
+        <ul>
+          <li><a href="#">Aviso legal</a></li>
+          <li><a href="#">Privacidad y RGPD</a></li>
+          <li><a href="#">Cookies</a></li>
+          <li><a href="#">Términos de venta</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span class="lab" id="legal-market">Enviando a España · EUR €</span>
+      <span class="lab">Maresía · Las Palmas de Gran Canaria</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mock">
+  <div class="shell">
+    <span class="lab">Maqueta de diseño</span>
+    <p>Propuesta visual para Emilio, no una tienda en funcionamiento. «Maresía» es un nombre provisional y los precios son de ejemplo. Prueba el selector <strong>España € / México $</strong> de la cabecera: así funcionarían los dos mercados sobre una única tienda, con el pago contra entrega activado en México. Fotografías de muestra de <a href="https://unsplash.com">Unsplash</a> y <a href="https://www.pexels.com">Pexels</a>; en la tienda real se usan las imágenes del proveedor. — Alex</p>
+  </div>
+</div>
+
+<a class="float" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.9-.9L3 20.5l1.6-4.4a8.3 8.3 0 0 1-1.1-4.1 8.4 8.4 0 0 1 8.5-8.4 8.4 8.4 0 0 1 9 7.9z"/></svg><span>WhatsApp</span></a>
+
+<script>
+(function () {
+  "use strict";
+
+  var ES = {
+    ticker: "Envío en 48-72 h en península · Canarias 3-5 días · Devoluciones gratuitas 14 días",
+    ship: "48-72 h en península. Canarias en 3-5 días, con el IGIC calculado en el pedido.",
+    ret: "14 días para cambiar o devolver, con etiqueta de retorno incluida.",
+    pay: "Bizum, tarjeta y PayPal. Cobro seguro, sin guardar tus datos.",
+    legal: "Enviando a España · EUR €",
+    key: "eur"
+  };
+  var MX = {
+    ticker: "Envío en 2-4 días en CDMX, Monterrey y Guadalajara · Pago contra entrega",
+    ship: "2-4 días en las grandes ciudades, 5-7 días en el resto del país.",
+    ret: "14 días para cambiar o devolver. Recogida a domicilio en zona urbana.",
+    pay: "Pago contra entrega en efectivo. También tarjeta y PayPal.",
+    legal: "Enviando a México · MXN $",
+    key: "mxn"
+  };
+
+  var esBtn = document.getElementById("btn-es");
+  var mxBtn = document.getElementById("btn-mx");
+  var prices = document.querySelectorAll(".price span");
+
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
+  function apply(m, isEs) {
+    setText("ticker", m.ticker);
+    setText("svc-ship", m.ship);
+    setText("svc-ret", m.ret);
+    setText("svc-pay", m.pay);
+    setText("legal-market", m.legal);
+    for (var i = 0; i < prices.length; i++) {
+      var v = prices[i].getAttribute("data-" + m.key);
+      if (v) prices[i].textContent = v;
+    }
+    esBtn.setAttribute("aria-pressed", isEs ? "true" : "false");
+    mxBtn.setAttribute("aria-pressed", isEs ? "false" : "true");
+  }
+
+  esBtn.addEventListener("click", function () { apply(ES, true); });
+  mxBtn.addEventListener("click", function () { apply(MX, false); });
+
+  // selección de talla
+  var groups = document.querySelectorAll(".sizes");
+  for (var g = 0; g < groups.length; g++) {
+    groups[g].addEventListener("click", function (e) {
+      var b = e.target.closest("button");
+      if (!b || b.disabled) return;
+      var sibs = this.querySelectorAll("button");
+      for (var s = 0; s < sibs.length; s++) sibs[s].setAttribute("aria-pressed", "false");
+      b.setAttribute("aria-pressed", "true");
+    });
+  }
+
+  // menú móvil
+  var burger = document.getElementById("burger");
+  var navMob = document.getElementById("nav-mob");
+  burger.addEventListener("click", function () {
+    var open = navMob.getAttribute("data-open") === "true";
+    navMob.setAttribute("data-open", open ? "false" : "true");
+    burger.setAttribute("aria-expanded", open ? "false" : "true");
+    burger.setAttribute("aria-label", open ? "Abrir menú" : "Cerrar menú");
+  });
+  navMob.addEventListener("click", function (e) {
+    if (e.target.tagName === "A") {
+      navMob.setAttribute("data-open", "false");
+      burger.setAttribute("aria-expanded", "false");
+      burger.setAttribute("aria-label", "Abrir menú");
+    }
+  });
+})();
+</script>
+</body>
+</html>
