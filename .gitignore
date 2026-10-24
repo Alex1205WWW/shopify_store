@@ -1,0 +1,10 @@
+# Notas de trabajo: nunca deben publicarse
+claude.md
+
+# Entregables internos
+*.local
+
+# Dependencias y ruido del sistema
+node_modules/
+.DS_Store
+Thumbs.db
